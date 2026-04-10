@@ -1,5 +1,6 @@
 import Link from "next/link";
 import { BookOpen, Brain, FileText, Search, ShieldCheck, Factory, Clock, ArrowRight, Presentation } from "lucide-react";
+
 import { MODULE_CONFIG } from "./lib/modules";
 import Header from "./components/Header";
 
@@ -26,7 +27,7 @@ export default function Home() {
         </p>
 
         {/* AI Tool Badges */}
-        <div className="flex flex-wrap items-center justify-center gap-3">
+        <div className="flex flex-wrap items-center justify-center gap-3 mb-6">
           {["Gemini", "Claude", "ChatGPT", "사내 LLM"].map((name) => (
             <span
               key={name}
@@ -41,6 +42,19 @@ export default function Home() {
             </span>
           ))}
         </div>
+
+        {/* CTA Button */}
+        <Link
+          href="/slides"
+          className="inline-flex items-center gap-2 px-6 py-3 rounded-lg text-base font-semibold transition-colors"
+          style={{
+            background: 'var(--site-accent)',
+            color: '#FFFFFF',
+          }}
+        >
+          <Presentation size={18} />
+          전체 발표자료 보기
+        </Link>
       </section>
 
       {/* Module Cards Grid */}
@@ -124,18 +138,6 @@ export default function Home() {
                   >
                     <ArrowRight size={14} />
                     학습하기
-                  </Link>
-                  <Link
-                    href={`/slides/${mod.id}`}
-                    className="flex items-center justify-center gap-1.5 px-4 py-2.5 rounded-lg text-sm font-medium transition-colors"
-                    style={{
-                      background: 'var(--site-bg)',
-                      color: 'var(--site-text-secondary)',
-                      border: '1px solid var(--site-border)',
-                    }}
-                  >
-                    <Presentation size={14} />
-                    <span className="hidden sm:inline">발표자료</span>
                   </Link>
                 </div>
               </div>

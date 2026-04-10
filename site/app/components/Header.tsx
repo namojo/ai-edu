@@ -40,7 +40,7 @@ export default function Header() {
             <span className="hidden sm:inline">학습하기</span>
           </Link>
           <Link
-            href="/#modules"
+            href="/slides"
             className="flex items-center gap-1.5 px-3 py-2 rounded-lg text-sm font-medium transition-colors"
             style={{
               color: pathname.startsWith('/slides')

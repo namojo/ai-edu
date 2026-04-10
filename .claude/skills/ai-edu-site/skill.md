@@ -1,227 +1,147 @@
 ---
 name: ai-edu-site
-description: "금융/디스플레이 제조업 직장인 대상 생성형 AI 교육 사이트를 구축하는 오케스트레이터. 마크다운 교육자료를 슬라이드 기반 웹사이트로 변환하고, Gemini API로 일러스트레이션을 생성한다. AI 교육 사이트, 슬라이드 생성, 교육 웹앱."
+description: "금융/디스플레이 제조업 직장인 대상 생성형 AI 교육 사이트를 구축하는 오케스트레이터. 인터랙티브 학습 사이트 + 통합 프레젠테이션 발표자료. AI 교육 사이트, 교육 웹앱."
 ---
 
 # AI Education Site Orchestrator
 
-금융/디스플레이 제조업 직장인을 위한 생성형 AI 교육 사이트를 구축하는 에이전트 팀을 조율한다. 6개 마크다운 교육 모듈을 슬라이드 기반 Next.js 웹사이트로 변환하고, Gemini Image API로 따뜻한 미니멀리즘 스타일의 일러스트레이션을 생성한다.
+금융/디스플레이 제조업 직장인을 위한 생성형 AI 교육 사이트를 구축한다.
 
-## 실행 모드: 에이전트 팀
+## 사이트 구조 (2개 섹션)
+
+### 1. 인터랙티브 학습 사이트 (`/learn/[moduleId]`)
+- 마크다운 교육자료를 풀 렌더링하는 학습 페이지
+- 사이드바 목차, 코드 복사, 콜아웃 박스
+- 깔끔한 현대적 디자인 (화이트/블루 기조)
+- 모듈별 개별 페이지
+
+### 2. 통합 프레젠테이션 (`/slides`)
+- 6개 모듈 전체를 합친 1개 발표자료
+- CSS 기반 프로페셔널 디자인 (Gemini 이미지 미사용)
+- 모듈별 액센트 컬러로 구분
+- 키보드/터치 네비게이션, 모듈 탭 + 도트 네비게이션
+
+**중요:** 발표자료는 모듈별로 분리하지 않음. 전체 교육과정이 하나의 연속된 슬라이드 덱.
+
+## 실행 모드: 서브 에이전트
+
+이 프로젝트는 동일 코드베이스에 순차적으로 코드를 작성하므로 서브 에이전트 모드가 적합하다.
 
 ## 에이전트 구성
 
-| 팀원 | 에이전트 타입 | 역할 | 출력 |
-|------|-------------|------|------|
-| content-architect | content-architect (커스텀) | 마크다운 파싱 → 슬라이드 JSON | `_workspace/slides.json` |
-| frontend-builder | frontend-builder (커스텀) | Next.js 앱 개발 | `app/`, `components/`, `lib/` |
-| slide-illustrator | slide-illustrator (커스텀) | Gemini 이미지 생성 | `public/slides/*.png` |
+| 에이전트 | 타입 | 역할 | 출력 |
+|---------|------|------|------|
+| frontend-builder | general-purpose | Next.js 앱 전체 개발 | `site/` 프로젝트 |
+
+> content-architect, slide-illustrator 에이전트는 더 이상 필요 없음.
+> 마크다운 파싱은 `build-slides.ts`에서 빌드 타임에 수행.
+> 이미지 생성 대신 CSS 기반 디자인 사용.
+
+## 기술 스택
+
+- **프레임워크**: Next.js 14+ (App Router, 정적 export)
+- **스타일링**: Tailwind CSS 4 + 커스텀 CSS
+- **폰트**: Pretendard (CDN)
+- **마크다운**: react-markdown + remark-gfm + rehype-slug + rehype-highlight
+- **아이콘**: Lucide React
+- **배포**: GitHub Pages (basePath: '/ai-edu')
+
+## 프로젝트 구조
+
+```
+site/
+├── app/
+│   ├── layout.tsx                 # 루트 레이아웃
+│   ├── page.tsx                   # 홈 (모듈 목록 + 발표자료 CTA)
+│   ├── globals.css                # 사이트 테마 + 프레젠테이션 테마
+│   ├── types.ts                   # PresentationSlide 타입
+│   ├── lib/
+│   │   ├── modules.ts             # 모듈 설정
+│   │   ├── markdown.ts            # 마크다운 유틸리티
+│   │   └── build-slides.ts        # 마크다운→슬라이드 변환
+│   ├── components/
+│   │   ├── Header.tsx             # 사이트 헤더
+│   │   ├── PresentationViewer.tsx # 통합 슬라이드 뷰어
+│   │   ├── MarkdownRenderer.tsx   # 학습 페이지 마크다운 렌더러
+│   │   ├── TableOfContents.tsx    # 학습 사이드바 목차
+│   │   ├── CopyButton.tsx         # 코드 복사 버튼
+│   │   └── CalloutBox.tsx         # 팁/경고 콜아웃
+│   ├── learn/
+│   │   └── [moduleId]/page.tsx    # 모듈별 학습 페이지
+│   └── slides/
+│       └── page.tsx               # 통합 발표자료 페이지
+├── content/
+│   └── module-1~6.md              # 마크다운 교육자료
+└── public/                        # 정적 파일
+```
 
 ## 워크플로우
 
 ### Phase 1: 준비
+1. 프로젝트 루트에 교육자료 마크다운 6개 존재 확인
+2. `site/content/`에 마크다운 복사
+3. Next.js 프로젝트 초기화 (없으면)
 
-1. 프로젝트 루트에 교육자료 마크다운 파일 6개 존재 확인
-2. `.env.local`에서 `GEMINI_API_KEY` 존재 확인
-3. `_workspace/` 디렉토리 생성
-4. 기존 Next.js 프로젝트가 있는지 확인 (있으면 기존 구조 활용)
+### Phase 2: 학습 사이트 구축
+1. 마크다운 렌더링 패키지 설치
+2. 학습 페이지 컴포넌트 개발 (MarkdownRenderer, TOC, CopyButton)
+3. `/learn/[moduleId]` 라우트 생성
+4. 사이트 디자인 (클린 모던 테마)
 
-### Phase 2: 팀 구성
+### Phase 3: 프레젠테이션 구축
+1. `build-slides.ts`: 마크다운 → PresentationSlide[] 변환
+2. `PresentationViewer.tsx`: CSS 기반 슬라이드 뷰어
+3. `/slides` 라우트 생성
+4. 프레젠테이션 디자인 (모듈별 컬러, 프로페셔널 레이아웃)
 
-1. 팀 생성:
-```
-TeamCreate(
-  team_name: "ai-edu-team",
-  description: "AI 교육 사이트 구축 팀"
-)
-```
+### Phase 4: 통합 및 배포
+1. 홈 페이지 + Header에서 양쪽 섹션 링크
+2. `npm run build` 검증
+3. GitHub Pages 배포
 
-2. 팀원 생성 (3명):
+## 프레젠테이션 디자인 시스템
 
-**content-architect** (먼저 실행):
-```
-Agent(
-  name: "content-architect",
-  subagent_type: "content-architect",
-  team_name: "ai-edu-team",
-  prompt: "당신은 content-architect입니다. 프로젝트 루트(/Users/andy/Work/ai-edu/)에 있는 6개 교육자료 마크다운 파일을 읽고, 각 모듈을 슬라이드 단위로 분할하여 _workspace/slides.json을 생성하세요.
+**모듈별 액센트 컬러:**
+| 모듈 | 주제 | 색상 |
+|------|------|------|
+| 1 | 프롬프트 엔지니어링 | #3B82F6 (Blue) |
+| 2 | AI/LLM 비교 | #8B5CF6 (Violet) |
+| 3 | 보고서 작성 | #10B981 (Emerald) |
+| 4 | 리서치/검색 | #F59E0B (Amber) |
+| 5 | 할루시네이션 방지 | #EF4444 (Red) |
+| 6 | 산업별 시나리오 | #06B6D4 (Cyan) |
 
-작업 순서:
-1. 교육자료_목차.md를 읽어 전체 구조 파악
-2. 교육자료_모듈1~6.md를 순서대로 읽기
-3. 각 모듈의 섹션을 슬라이드로 분할
-4. 각 슬라이드에 Gemini 이미지 생성용 영어 프롬프트 작성
-5. _workspace/slides.json에 결과 저장
-
-에이전트 정의(.claude/agents/content-architect.md)의 슬라이드 분할 기준과 JSON 스키마를 정확히 따르세요.
-
-완료 후 리더에게 알려주세요."
-)
-```
-
-3. 작업 등록:
-```
-TaskCreate(tasks: [
-  { title: "마크다운 파싱 및 슬라이드 JSON 생성", assignee: "content-architect" },
-  { title: "Next.js 프로젝트 초기화 및 앱 개발", assignee: "frontend-builder", depends_on: ["마크다운 파싱 및 슬라이드 JSON 생성"] },
-  { title: "슬라이드 이미지 생성", assignee: "slide-illustrator", depends_on: ["마크다운 파싱 및 슬라이드 JSON 생성"] }
-])
-```
-
-### Phase 3: 콘텐츠 파싱 (content-architect 단독)
-
-content-architect가 6개 마크다운 파일을 읽고 `_workspace/slides.json`을 생성한다.
-
-**리더 모니터링:**
-- content-architect 유휴 알림 수신 시 slides.json 생성 확인
-- slides.json이 올바른 구조인지 검증 (modules 배열, 각 module에 slides 배열)
-- 슬라이드 수 확인 (6개 모듈 × 약 8~15슬라이드 = 48~90개 예상)
-
-**완료 조건:** `_workspace/slides.json`이 유효한 JSON으로 존재
-
-### Phase 4: 프론트엔드 개발 + 이미지 생성 (병렬)
-
-slides.json이 완성되면 두 팀원을 동시에 실행한다.
-
-**frontend-builder 실행:**
-```
-Agent(
-  name: "frontend-builder",
-  subagent_type: "frontend-builder",
-  team_name: "ai-edu-team",
-  prompt: "당신은 frontend-builder입니다. /Users/andy/Work/ai-edu/ 에서 Next.js 교육 사이트를 구축하세요.
-
-핵심 요구사항:
-1. Next.js 14+ App Router + Tailwind CSS 4 프로젝트 초기화
-2. _workspace/slides.json(data/slides.json으로 복사)을 데이터 소스로 활용
-3. 홈 화면: 6개 모듈을 카드로 표시, 클릭 시 슬라이드 뷰어로 이동
-4. 슬라이드 뷰어: 방향키(←→) 네비게이션, 하단 도트 네비게이션
-5. 디자인: 따뜻한 미니멀리즘 (오프화이트 배경, 웜 오렌지 액센트)
-6. Gemini API 서버 라우트: POST /api/generate-image
-7. 이미지: public/slides/{slideId}.png에서 로드, 없으면 API 호출하여 생성
-
-에이전트 정의(.claude/agents/frontend-builder.md)의 디자인 시스템과 구조를 따르세요.
-Pretendard 폰트는 CDN(https://cdn.jsdelivr.net/gh/orioncactus/pretendard/dist/web/static/pretendard.min.css)으로 로드하세요.
-
-완료 후 npm run build가 성공하는지 확인하고, 리더에게 보고하세요."
-)
-```
-
-**slide-illustrator 실행:**
-```
-Agent(
-  name: "slide-illustrator",
-  subagent_type: "slide-illustrator",
-  team_name: "ai-edu-team",
-  prompt: "당신은 slide-illustrator입니다. /Users/andy/Work/ai-edu/ 에서 슬라이드 이미지를 생성하세요.
-
-작업:
-1. _workspace/slides.json 읽기
-2. 각 슬라이드의 imagePrompt를 사용하여 Gemini API로 이미지 생성
-3. public/slides/{slideId}.png에 저장
-4. 생성 로그를 _workspace/image-generation-log.json에 기록
-
-Gemini API:
-- API Key: .env.local의 GEMINI_API_KEY 사용
-- 모델: gemini-2.0-flash-exp (이미지 생성 지원)
-- 또는 gemini-3-pro-imagegen 스킬 활용
-
-주의사항:
-- API 호출 간 2초 대기 (rate limit)
-- 실패 시 1회 재시도
-- 모든 이미지는 1024x1024 이상
-
-에이전트 정의(.claude/agents/slide-illustrator.md)의 스타일 가이드를 따르세요.
-완료 후 리더에게 생성 결과를 보고하세요."
-)
-```
-
-**팀원 간 통신:**
-- frontend-builder → slide-illustrator: API 라우트 구현 방식 공유
-- slide-illustrator → frontend-builder: 이미지 파일 경로 규칙 확인
-- 두 팀원 모두 `public/slides/` 디렉토리에 접근하지만, slide-illustrator만 쓰기 담당
-
-### Phase 5: 통합 및 검증
-
-1. 모든 팀원의 작업 완료 대기
-2. 검증 체크리스트:
-   - [ ] `npm run build` 성공
-   - [ ] 홈 화면에 6개 모듈 카드 표시
-   - [ ] 각 모듈 클릭 시 슬라이드 뷰어 진입
-   - [ ] ← → 방향키로 슬라이드 전환
-   - [ ] 하단 네비게이션 동작
-   - [ ] 슬라이드 이미지 표시 (최소 첫 번째 모듈)
-   - [ ] Pretendard 폰트 적용
-   - [ ] 모바일 반응형 레이아웃
-
-3. 빌드 실패 시:
-   - 에러 로그 분석
-   - frontend-builder에게 수정 요청 (SendMessage)
-   - 최대 2회 수정 시도
-
-4. 이미지 누락 시:
-   - 누락 슬라이드 ID 확인
-   - slide-illustrator에게 재생성 요청
-   - 또는 플레이스홀더 SVG로 대체
-
-### Phase 6: 정리
-
-1. 팀원들에게 종료 요청:
-```
-SendMessage(to: "content-architect", message: { type: "shutdown_request" })
-SendMessage(to: "frontend-builder", message: { type: "shutdown_request" })
-SendMessage(to: "slide-illustrator", message: { type: "shutdown_request" })
-```
-
-2. `_workspace/` 보존 (slides.json, image-generation-log.json)
-3. 사용자에게 결과 보고:
-   - 사이트 URL: `http://localhost:3000`
-   - 총 슬라이드 수
-   - 생성된 이미지 수
-   - `npm run dev`로 실행 방법
-
-## 데이터 흐름
-
-```
-[교육자료 마크다운 6개]
-       ↓
-[content-architect] → _workspace/slides.json
-       ↓                    ↓
-[frontend-builder]    [slide-illustrator]
-  ↓ Next.js 앱          ↓ 이미지 파일
-  ↓ app/, components/    ↓ public/slides/
-       ↓                    ↓
-       └────── 통합 ────────┘
-              ↓
-     [완성된 교육 사이트]
-     http://localhost:3000
-```
+**슬라이드 타입:**
+- `cover`: 네이비(#0F172A) 배경, 전체 교육 제목
+- `module-title`: 모듈 액센트 배경, 모듈 번호 + 제목
+- `section-title`: 연한 배경, 섹션 제목
+- `content`: 흰색 배경, 불릿 포인트 (액센트 도트)
+- `table`: 스타일링된 테이블 (액센트 헤더)
+- `code`: 어두운 배경(#1E293B), 코드 폰트
+- `comparison`: 좌우 분할 Before(빨강)/After(초록)
+- `tip`: 액센트 좌측 보더 + 연한 배경
+- `summary`: 체크마크 불릿
 
 ## 에러 핸들링
 
 | 상황 | 전략 |
 |------|------|
-| content-architect 실패 | 리더가 직접 slides.json 생성 (간소화 버전) |
-| frontend-builder 빌드 실패 | 에러 로그 분석 → 수정 요청 (최대 2회) |
-| slide-illustrator API 실패 | Gemini API 키 확인 → 모델 변경 시도 → 실패 시 플레이스홀더 |
-| 이미지 과반 실패 | 사용자에게 알리고 텍스트 전용 모드로 전환 |
-| slides.json 형식 오류 | content-architect에게 수정 요청 또는 리더가 직접 수정 |
-| 팀원 타임아웃 | 현재까지 결과로 진행, 미완료 부분 보고 |
+| 마크다운 파싱 실패 | 해당 섹션 스킵, 나머지 진행 |
+| 빌드 에러 | TypeScript 에러 우선 수정 |
+| 슬라이드 수 과다 (400+) | 불릿 병합, 사소한 섹션 생략 |
+| 한글 렌더링 문제 | Pretendard 폰트 확인, CSS 폴백 |
 
 ## 테스트 시나리오
 
 ### 정상 흐름
-1. 리더가 교육자료 6개 + .env.local 확인
-2. content-architect가 ~60개 슬라이드의 slides.json 생성 (약 5분)
-3. frontend-builder가 Next.js 앱 빌드 성공 (약 10분)
-4. slide-illustrator가 ~60개 이미지 생성 (약 15분)
-5. 통합 검증 통과
-6. `npm run dev`로 사이트 실행 가능
+1. 6개 마크다운 → ~300-400개 슬라이드 생성
+2. `/slides`에서 전체 덱 네비게이션
+3. 모듈 탭으로 모듈 간 이동
+4. 모든 슬라이드 타입 정상 렌더링
 
-### 에러 흐름
-1. slide-illustrator가 Gemini API rate limit에 걸림
-2. exponential backoff으로 재시도
-3. 40/60개 이미지만 성공
-4. 리더가 남은 20개에 대해 재생성 요청
-5. 최종 55/60개 성공, 5개는 플레이스홀더
-6. 사용자에게 "5개 슬라이드 이미지 미생성" 보고
+### 검증 항목
+- 한글 텍스트 100% 정상
+- 테이블 데이터 정확
+- 코드 블록 형식 유지
+- Before/After 비교 올바른 매핑
+- 모듈 전환 시 컬러 변경
