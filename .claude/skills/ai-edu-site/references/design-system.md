@@ -1,191 +1,147 @@
 # Design System — AI 교육 사이트
 
-## 디자인 철학: 따뜻한 미니멀리즘
+## 디자인 철학
 
-종이 위에 잉크 펜으로 정성스럽게 기록한 다이어리나 일러스트레이션 책의 느낌.
-디지털이지만 인간적인 따뜻함이 느껴지는 디자인.
+깔끔하고 현대적인 교육 플랫폼. 콘텐츠 가독성과 학습 집중에 최적화.
+라이트/다크 모드 모두에서 일관된 경험 제공.
 
 ## 색상 팔레트
 
-### 기본 색상
-| 토큰 | 색상값 | 용도 |
-|------|--------|------|
-| `--bg-primary` | `#FFFDF7` | 메인 배경 (따뜻한 오프화이트) |
-| `--bg-secondary` | `#FFF8EE` | 카드/섹션 배경 |
-| `--bg-code` | `#F5F0EA` | 코드 블록 배경 |
-| `--text-primary` | `#2D2A26` | 본문 텍스트 (따뜻한 거의-검정) |
-| `--text-secondary` | `#6B6560` | 보조 텍스트 |
-| `--text-muted` | `#9E9790` | 비활성/플레이스홀더 |
-| `--accent` | `#E8863A` | 웜 오렌지 (CTA, 하이라이트) |
-| `--accent-light` | `#FFF0E0` | 연한 오렌지 (배경 하이라이트) |
-| `--accent-dark` | `#C46A25` | 어두운 오렌지 (호버) |
-| `--border` | `#E8E2DA` | 보더/구분선 |
-| `--border-light` | `#F0EBE3` | 연한 보더 |
+### 라이트 테마 (기본)
+| 토큰 | 값 | 용도 |
+|------|-----|------|
+| `--site-bg` | `#FFFFFF` | 메인 배경 |
+| `--site-bg-secondary` | `#F8FAFC` | 카드/사이드바 배경 |
+| `--site-code-bg` | `#F1F5F9` | 코드 블록 배경 |
+| `--site-text` | `#1A1A2E` | 본문 텍스트 |
+| `--site-text-secondary` | `#64748B` | 보조 텍스트 |
+| `--site-accent` | `#2563EB` | 블루 액센트 (링크, CTA) |
+| `--site-accent-light` | `#EFF6FF` | 연한 블루 배경 |
+| `--site-border` | `#E2E8F0` | 보더/구분선 |
 
-### 사용 규칙
-- 배경은 항상 따뜻한 톤 (순수한 #FFFFFF 사용 금지)
-- 텍스트는 순수한 #000000 사용 금지 (항상 따뜻한 톤)
-- 액센트 색상은 절제하여 사용 (페이지당 2~3곳 이내)
-- 그라데이션 사용 금지
+### 다크 테마
+| 토큰 | 값 | 용도 |
+|------|-----|------|
+| `--site-bg` | `#0F172A` | 메인 배경 (네이비) |
+| `--site-bg-secondary` | `#1E293B` | 카드/사이드바 배경 |
+| `--site-code-bg` | `#1E293B` | 코드 블록 배경 |
+| `--site-text` | `#E2E8F0` | 본문 텍스트 |
+| `--site-text-secondary` | `#94A3B8` | 보조 텍스트 |
+| `--site-accent` | `#60A5FA` | 밝은 블루 액센트 |
+| `--site-accent-light` | `#1E3A5F` | 어두운 블루 배경 |
+| `--site-border` | `#334155` | 보더/구분선 |
+
+### 테마 전환 메커니즘
+```css
+/* 시스템 자동 감지 */
+@media (prefers-color-scheme: dark) {
+  :root:not([data-theme="light"]) { /* 다크 변수 */ }
+}
+
+/* 수동 오버라이드 */
+[data-theme="dark"] { /* 다크 변수 */ }
+```
+
+### 콜아웃 색상
+| 타입 | 보더 | 배경 (라이트) | 배경 (다크) |
+|------|------|-------------|------------|
+| 팁 (💡) | `#2563EB` | `#EFF6FF` | `#1E3A5F` |
+| 핵심 (🔑) | `#7C3AED` | `#F5F3FF` | `#2E1065` |
+| 주의 (⚠) | `#D97706` | `#FFFBEB` | `#451A03` |
 
 ## 타이포그래피
 
 ### 폰트
-- **주 폰트**: Pretendard (CDN)
-  ```html
-  <link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/orioncactus/pretendard/dist/web/static/pretendard.min.css">
-  ```
-- **코드 폰트**: JetBrains Mono 또는 시스템 monospace
+```html
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/orioncactus/pretendard/dist/web/static/pretendard.min.css">
+```
+- **주 폰트**: Pretendard
+- **코드 폰트**: Pretendard + ui-monospace 폴백
 - **폴백**: -apple-system, BlinkMacSystemFont, system-ui, sans-serif
 
-### 크기 체계
+### 프로즈 타이포그래피
 | 용도 | 크기 | 굵기 | 행간 |
 |------|------|------|------|
-| 히어로 제목 | 2.5rem (40px) | Bold (700) | 1.3 |
-| 모듈 제목 | 2rem (32px) | Bold (700) | 1.4 |
-| 슬라이드 제목 | 1.5rem (24px) | SemiBold (600) | 1.4 |
-| 소제목 | 1.25rem (20px) | SemiBold (600) | 1.5 |
-| 본문 | 1.125rem (18px) | Regular (400) | 1.7 |
-| 보조 텍스트 | 0.875rem (14px) | Regular (400) | 1.6 |
-| 코드 | 0.9375rem (15px) | Regular (400) | 1.6 |
+| h1 | 2rem | 800 | 1.3 |
+| h2 | 1.5rem | 700 | 1.35 |
+| h3 | 1.25rem | 600 | 1.4 |
+| 본문 | 1rem | 400 | 1.8 |
+| 코드 | 0.875rem | 400 | 1.7 |
+| 보조 텍스트 | 0.875rem | 400 | 1.6 |
 
 ### 한글 가독성
-- 행간(line-height) 최소 1.7 (한글은 영문보다 넓은 행간 필요)
-- 문단 간격: 1.5em
-- 최대 줄 길이: 40em (한글 기준 약 40자)
+- 행간: 1.8 (영문보다 넓게)
+- h2/h3: `padding-top: 80px` (TOC 스크롤 오프셋)
 
 ## 레이아웃
 
-### 슬라이드 뷰어
+### 학습 페이지
 ```
-┌──────────────────────────────────────────────────┐
-│  ← 모듈명                              1/12  →  │  ← 상단 바
-├──────────────────────────────────────────────────┤
-│                                                  │
-│   ┌──────────────┐  ┌──────────────────────┐     │
-│   │              │  │ 슬라이드 제목         │     │
-│   │  일러스트    │  │                      │     │
-│   │  이미지      │  │ • 핵심 포인트 1       │     │
-│   │              │  │ • 핵심 포인트 2       │     │
-│   │              │  │ • 핵심 포인트 3       │     │
-│   └──────────────┘  └──────────────────────┘     │
-│                                                  │
-├──────────────────────────────────────────────────┤
-│  ○ ○ ● ○ ○ ○ ○ ○ ○ ○ ○ ○                       │  ← 하단 네비게이션
-└──────────────────────────────────────────────────┘
+┌─────────────────────────────────────────────┐
+│  [AI 교육]           [학습하기]  [🌙]       │ ← Header (sticky)
+├──────────┬──────────────────────────────────┤
+│ 목차     │                                  │
+│ (240px)  │  마크다운 콘텐츠                 │
+│ sticky   │                                  │
+│          │  [테이블]  [코드블록]  [콜아웃]   │
+│          │                                  │
+└──────────┴──────────────────────────────────┘
 ```
 
-### 모바일 (< 768px)
+### 모바일 (< 1024px)
 ```
 ┌────────────────────┐
-│ ← 모듈명     1/12 →│
+│ [AI 교육]    [🌙]  │
+├────────────────────┤
+│ [▾ 목차 열기]      │
 ├────────────────────┤
 │                    │
-│  ┌──────────────┐  │
-│  │ 일러스트     │  │
-│  │ 이미지       │  │
-│  └──────────────┘  │
+│ 마크다운 콘텐츠    │
 │                    │
-│  슬라이드 제목     │
-│                    │
-│  • 핵심 포인트 1   │
-│  • 핵심 포인트 2   │
-│  • 핵심 포인트 3   │
-│                    │
-├────────────────────┤
-│ ○ ○ ● ○ ○ ○ ○ ○   │
 └────────────────────┘
 ```
 
-### 그리드 시스템
-- 최대 너비: 1200px
-- 패딩: 24px (모바일 16px)
-- 슬라이드 뷰어: 이미지 40% / 텍스트 60% (데스크톱)
-- 홈 카드 그리드: 3열 (데스크톱), 2열 (태블릿), 1열 (모바일)
+### 그리드
+- 최대 너비: 1152px (max-w-6xl)
+- 사이드바: 240px (lg 이상)
+- 홈 카드 그리드: 3열/2열/1열 (반응형)
 
 ## 컴포넌트 스타일
 
-### 카드
-```css
-border-radius: 12px;
-border: 1px solid var(--border);
-background: var(--bg-secondary);
-padding: 24px;
-box-shadow: 0 1px 3px rgba(45, 42, 38, 0.06);
-transition: transform 0.2s, box-shadow 0.2s;
-/* hover */
-transform: translateY(-2px);
-box-shadow: 0 4px 12px rgba(45, 42, 38, 0.1);
-```
-
-### 버튼 (네비게이션)
-```css
-border-radius: 8px;
-padding: 8px 16px;
-background: transparent;
-border: 1px solid var(--border);
-color: var(--text-secondary);
-transition: all 0.2s;
-/* hover */
-background: var(--accent-light);
-border-color: var(--accent);
-color: var(--accent-dark);
-```
-
 ### 코드 블록
 ```css
+background: var(--site-code-bg);
+border: 1px solid var(--site-border);
 border-radius: 8px;
-background: var(--bg-code);
-padding: 16px 20px;
-font-family: 'JetBrains Mono', monospace;
-font-size: 0.9375rem;
-line-height: 1.6;
-border: 1px solid var(--border-light);
-overflow-x: auto;
+padding: 1rem 1.25rem;
+/* 호버 시 복사 버튼 노출 */
 ```
 
-### 도트 네비게이션
+### 콜아웃 박스
 ```css
-/* 기본 도트 */
-width: 8px; height: 8px;
-border-radius: 50%;
-background: var(--border);
-transition: all 0.2s;
-/* 활성 도트 */
-width: 24px;
-border-radius: 4px;
-background: var(--accent);
+border-left: 4px solid {타입별 색상};
+border-radius: 0 8px 8px 0;
+padding: 1rem 1.25rem;
 ```
 
-## 애니메이션
-
-### 슬라이드 전환
+### Mermaid 다이어그램
 ```css
-/* 다음 슬라이드 */
-@keyframes slide-in-right {
-  from { opacity: 0; transform: translateX(20px); }
-  to { opacity: 1; transform: translateX(0); }
+.mermaid-container {
+  overflow-x: auto;
+  padding: 1rem;
+  /* 다크모드: mermaid.initialize({ theme: 'dark' }) */
 }
-/* 이전 슬라이드 */
-@keyframes slide-in-left {
-  from { opacity: 0; transform: translateX(-20px); }
-  to { opacity: 1; transform: translateX(0); }
-}
-animation-duration: 200ms;
-animation-timing-function: ease-out;
 ```
 
-### 스켈레톤 로딩
+### 테이블
 ```css
-@keyframes skeleton-pulse {
-  0%, 100% { opacity: 0.4; }
-  50% { opacity: 0.8; }
-}
-background: linear-gradient(90deg, var(--border-light) 25%, var(--border) 50%, var(--border-light) 75%);
+.prose table { width: 100%; border-collapse: collapse; }
+.prose thead th { background: var(--site-bg-secondary); }
+.prose tbody tr:hover { background: var(--site-bg-secondary); }
 ```
 
 ## 접근성
 - 최소 색상 대비: 4.5:1 (WCAG AA)
-- 키보드 포커스 표시: 2px solid var(--accent), offset 2px
-- 슬라이드 전환 시 aria-live 알림
-- 이미지에 alt 텍스트 (슬라이드 제목 기반)
+- 다크 모드에서도 대비 유지
+- 키보드 포커스: outline 스타일
+- 코드 블록 스크린 리더 접근 가능
