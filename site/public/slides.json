@@ -1,0 +1,844 @@
+{
+  "modules": [
+    {
+      "id": "module-1",
+      "title": "프롬프트 엔지니어링 기초와 실전",
+      "subtitle": "Module 1",
+      "slides": [
+        {
+          "id": "m1-s01",
+          "type": "title",
+          "title": "프롬프트 엔지니어링 기초와 실전",
+          "subtitle": "프롬프트 설계의 핵심 원리와 실전 기법",
+          "bullets": [],
+          "notes": "학습 시간: 약 40분",
+          "imagePrompt": "Minimalist hand-drawn line-art illustration. Ink pen style with slight line weight variation. Limited palette: black linework on off-white background with warm orange (#E8863A) accents. Caricature characters with oversized heads, simple dot-line faces. Clean whitespace. No gradients, no 3D. A large speech bubble labeled 'Prompt' connecting a caricature person to a robot brain icon, with small gear and sparkle symbols around them."
+        },
+        {
+          "id": "m1-s02",
+          "type": "objectives",
+          "title": "학습 목표",
+          "bullets": [
+            "프롬프트 실패의 3가지 원인(모호한 지시, 맥락 부재, 형식 미지정)을 진단할 수 있다",
+            "5가지 핵심 프롬프트 기법(Zero-shot, Few-shot, Role-play, CoT, 구조화 출력)을 상황에 맞게 선택할 수 있다",
+            "5단계 프롬프트 체크리스트를 활용하여 즉시 업무에 적용할 수 있다",
+            "프롬프트 품질에 따른 결과 차이를 체감하고, 기법 조합 공식을 설계할 수 있다"
+          ],
+          "imagePrompt": "Minimalist hand-drawn line-art illustration. Ink pen style with slight line weight variation. Limited palette: black linework on off-white background with warm orange (#E8863A) accents. Caricature characters with oversized heads, simple dot-line faces. Clean whitespace. No gradients, no 3D. A checklist with four items, each with an orange checkmark, next to a caricature student character holding a pencil."
+        },
+        {
+          "id": "m1-s03",
+          "type": "concept",
+          "title": "프롬프트 실패의 3가지 원인",
+          "bullets": [
+            "함정 1: 모호한 지시 — '보고서 써줘'처럼 막연한 요청",
+            "함정 2: 맥락 부재 — AI는 여러분의 상황을 추측하지 못함",
+            "함정 3: 출력 형식 미지정 — 길고 긴 문단을 쏟아냄"
+          ],
+          "notes": "AI가 멍청한 게 아니라, 지시가 모호했던 것",
+          "imagePrompt": "Minimalist hand-drawn line-art illustration. Ink pen style with slight line weight variation. Limited palette: black linework on off-white background with warm orange (#E8863A) accents. Caricature characters with oversized heads, simple dot-line faces. Clean whitespace. No gradients, no 3D. Three pitfall holes in a row labeled with orange X marks. A confused caricature character standing at a crossroads looking at three warning signs."
+        },
+        {
+          "id": "m1-s04",
+          "type": "comparison",
+          "title": "함정별 제조/금융 실패 사례",
+          "table": {
+            "headers": ["함정", "제조 예시", "금융 예시"],
+            "rows": [
+              ["모호한 지시", "\"설비 이상 보고서 써줘\" → 교과서적 나열", "\"보험 상품 분석해줘\" → 위키백과 수준"],
+              ["맥락 부재", "제품명, 불량 유형, 분석 기간 누락", "상품명, 고객 세그먼트, 비교 기준 누락"],
+              ["형식 미지정", "공정 개선에 대한 장문 에세이", "리스크 평가에 대한 산만한 서술"]
+            ]
+          },
+          "imagePrompt": "Minimalist hand-drawn line-art illustration. Ink pen style with slight line weight variation. Limited palette: black linework on off-white background with warm orange (#E8863A) accents. Caricature characters with oversized heads, simple dot-line faces. Clean whitespace. No gradients, no 3D. Split scene: left side shows a factory with gears, right side shows a bank building. Both have speech bubbles with question marks above confused caricature workers."
+        },
+        {
+          "id": "m1-s05",
+          "type": "comparison",
+          "title": "5가지 프롬프트 기법 총정리",
+          "table": {
+            "headers": ["기법", "핵심 원리", "언제 쓰는가", "제조 예시", "금융 예시"],
+            "rows": [
+              ["Zero-shot", "예시 없이 바로 요청", "단순 요약, 번역", "일일 생산 리포트 요약", "회의록 요약"],
+              ["Few-shot", "예시를 먼저 보여줌", "양식 통일, 반복 업무", "설비 점검 보고서 양식 맞추기", "심사 의견서 작성"],
+              ["Role-play", "전문가 역할 부여", "전문가 관점 분석", "품질 엔지니어로 불량 분석", "보험계리사로 상품 분석"],
+              ["CoT", "단계별 추론 요청", "복잡한 분석, 의사결정", "수율 저하 원인 단계별 추론", "대출 심사 리스크 평가"],
+              ["구조화 출력", "형식 지정(표, 리스트)", "보고서, 비교표", "공정 개선안 항목별 정리", "상품 비교표 작성"]
+            ]
+          },
+          "imagePrompt": "Minimalist hand-drawn line-art illustration. Ink pen style with slight line weight variation. Limited palette: black linework on off-white background with warm orange (#E8863A) accents. Caricature characters with oversized heads, simple dot-line faces. Clean whitespace. No gradients, no 3D. An open toolbox with five tools inside, each labeled: a wrench, hammer, magnifying glass, chain links, and a ruler. Orange accent highlights on each tool."
+        },
+        {
+          "id": "m1-s06",
+          "type": "example",
+          "title": "기법별 프롬프트 예시",
+          "subtitle": "Few-shot + Role-play + CoT",
+          "code": "당신은 10년차 보험계리사입니다.  ← [Role-play]\n\n아래 예시와 같은 형식으로 분석해주세요. ← [Few-shot]\n[예시 표 제공]\n\n다음 단계로 원인을 분석해주세요:   ← [CoT]\n1단계: 공정별 수율 기여도 분석\n2단계: 변동 요인 식별\n3단계: 주요 원인 후보 3가지 도출\n\n출력: 마크다운 표 형식             ← [구조화 출력]",
+          "imagePrompt": "Minimalist hand-drawn line-art illustration. Ink pen style with slight line weight variation. Limited palette: black linework on off-white background with warm orange (#E8863A) accents. Caricature characters with oversized heads, simple dot-line faces. Clean whitespace. No gradients, no 3D. A caricature character sitting at a laptop with a large speech bubble containing neat organized lines of text. Orange arrows pointing from the character to the screen."
+        },
+        {
+          "id": "m1-s07",
+          "type": "comparison",
+          "title": "Before/After — 설비 점검 보고서",
+          "beforeAfter": {
+            "before": {
+              "title": "Before: 모호한 요청",
+              "content": "\"CVD 장비 점검 보고서 작성해줘\"\n→ 일반론 나열, 우리 장비 정보 없음, 보고서 활용 불가"
+            },
+            "after": {
+              "title": "After: 역할+맥락+형식+조건",
+              "content": "역할(설비 보전 전문가) + 맥락(장비명, 점검일, 데이터) + 형식(표+종합의견) + 조건(3줄 이내)\n→ 팀장에게 바로 보고 가능한 체계적 보고서"
+            }
+          },
+          "imagePrompt": "Minimalist hand-drawn line-art illustration. Ink pen style with slight line weight variation. Limited palette: black linework on off-white background with warm orange (#E8863A) accents. Caricature characters with oversized heads, simple dot-line faces. Clean whitespace. No gradients, no 3D. Left side: a messy crumpled paper with an orange X. Right side: a neat organized report document with an orange checkmark. Arrow pointing from left to right."
+        },
+        {
+          "id": "m1-s08",
+          "type": "comparison",
+          "title": "프롬프트 품질별 결과 비교",
+          "table": {
+            "headers": ["구분", "초급", "중급", "고급"],
+            "rows": [
+              ["분량", "~500자", "~1,000자", "~3,000자"],
+              ["구조", "없음 (서술형)", "기본 구조", "5단계 체계적 분석"],
+              ["구체성", "일반론", "관련은 있으나 표면적", "실제 데이터 기반 심층 분석"],
+              ["활용도", "참고 불가", "초안 수준", "보고서 즉시 활용 가능"]
+            ]
+          },
+          "notes": "프롬프트 2분 투자 → 수정 2시간 절약",
+          "imagePrompt": "Minimalist hand-drawn line-art illustration. Ink pen style with slight line weight variation. Limited palette: black linework on off-white background with warm orange (#E8863A) accents. Caricature characters with oversized heads, simple dot-line faces. Clean whitespace. No gradients, no 3D. Three ascending steps labeled with stars (1, 2, 3). Each step has a document icon growing in quality. The top step has an orange glow effect."
+        },
+        {
+          "id": "m1-s09",
+          "type": "diagram",
+          "title": "5단계 프롬프트 체크리스트",
+          "bullets": [
+            "1단계 역할: \"당신은 ___입니다\" — 어떤 전문가가 필요한가?",
+            "2단계 맥락: 배경, 목적, 대상 — 어떤 상황에서 왜 필요한가?",
+            "3단계 지시: 원하는 작업 명확히 — 정확히 무엇을 해달라는 건가?",
+            "4단계 형식: 표, 리스트, 보고서 — 결과물이 어떤 모양이면 좋은가?",
+            "5단계 조건: 분량, 톤, 포함/제외 — 특별히 지켜야 할 제약은?"
+          ],
+          "notes": "상황에 맞게 두세 개만 채워도 결과가 확 달라짐",
+          "imagePrompt": "Minimalist hand-drawn line-art illustration. Ink pen style with slight line weight variation. Limited palette: black linework on off-white background with warm orange (#E8863A) accents. Caricature characters with oversized heads, simple dot-line faces. Clean whitespace. No gradients, no 3D. A vertical flowchart with five connected boxes in a downward flow, each box with a small icon: a person hat, a map pin, a pointing hand, a table grid, and a settings gear. Orange connecting arrows between boxes."
+        },
+        {
+          "id": "m1-s10",
+          "type": "concept",
+          "title": "기법 조합 공식",
+          "content": "**공식**: 역할(Role-play) + 맥락(Context) + 지시(Instruction) + 형식(Format) + 조건(Constraint)",
+          "table": {
+            "headers": ["업무 유형", "권장 기법 조합"],
+            "rows": [
+              ["단순 번역/요약", "Zero-shot + 형식"],
+              ["반복 문서 작성", "Few-shot + 구조화 출력"],
+              ["전문 분석 보고서", "Role-play + CoT + 구조화"],
+              ["복잡한 의사결정", "Role-play + CoT"],
+              ["고객 대응 문서", "Role-play + Few-shot + 형식"]
+            ]
+          },
+          "imagePrompt": "Minimalist hand-drawn line-art illustration. Ink pen style with slight line weight variation. Limited palette: black linework on off-white background with warm orange (#E8863A) accents. Caricature characters with oversized heads, simple dot-line faces. Clean whitespace. No gradients, no 3D. A formula equation visual: five puzzle pieces labeled R, C, I, F, C fitting together to form a complete rectangle. Orange highlights on the connecting edges."
+        },
+        {
+          "id": "m1-s11",
+          "type": "practice",
+          "title": "실습: 프롬프트 진단 퀴즈",
+          "content": "**Q.** \"고객 불만 처리 매뉴얼 만들어줘\" 이 프롬프트의 문제점은?\n\n(A) 역할 미지정 (B) 맥락 부재 (C) 형식 미지정 **(D) 위 모두 해당**",
+          "bullets": [
+            "범용 프롬프트 템플릿을 활용하여 개선해보기",
+            "기존 프롬프트를 Before/After로 비교해보는 실습이 가장 효과적"
+          ],
+          "imagePrompt": "Minimalist hand-drawn line-art illustration. Ink pen style with slight line weight variation. Limited palette: black linework on off-white background with warm orange (#E8863A) accents. Caricature characters with oversized heads, simple dot-line faces. Clean whitespace. No gradients, no 3D. A caricature character with a thinking pose and a large question mark above their head. A clipboard with multiple choice options A B C D, with D circled in orange."
+        },
+        {
+          "id": "m1-s12",
+          "type": "summary",
+          "title": "모듈 1 핵심 요약",
+          "bullets": [
+            "프롬프트 실패 = 모호한 지시 + 맥락 부재 + 형식 미지정",
+            "5가지 기법은 도구 — 상황에 맞게 선택",
+            "프롬프트 2분 투자 → 수정 2시간 절약",
+            "기법 조합 공식: 역할+맥락+지시+형식+조건",
+            "Before/After 비교로 차이를 체감"
+          ],
+          "imagePrompt": "Minimalist hand-drawn line-art illustration. Ink pen style with slight line weight variation. Limited palette: black linework on off-white background with warm orange (#E8863A) accents. Caricature characters with oversized heads, simple dot-line faces. Clean whitespace. No gradients, no 3D. A caricature character giving a thumbs up next to a neatly organized summary board with five bullet points. A small trophy icon with an orange glow at the top."
+        }
+      ]
+    },
+    {
+      "id": "module-2",
+      "title": "AI/LLM 종류별 특성과 활용법",
+      "subtitle": "Module 2",
+      "slides": [
+        {
+          "id": "m2-s01",
+          "type": "title",
+          "title": "AI/LLM 종류별 특성과 활용법",
+          "subtitle": "업무에 맞는 AI 모델을 선택하는 전략",
+          "bullets": [],
+          "notes": "학습 시간: 약 40분",
+          "imagePrompt": "Minimalist hand-drawn line-art illustration. Ink pen style with slight line weight variation. Limited palette: black linework on off-white background with warm orange (#E8863A) accents. Caricature characters with oversized heads, simple dot-line faces. Clean whitespace. No gradients, no 3D. Six different robot characters standing in a row, each with a distinct shape and size, representing different AI models. Orange accents on their chest logos."
+        },
+        {
+          "id": "m2-s02",
+          "type": "objectives",
+          "title": "학습 목표",
+          "bullets": [
+            "주요 AI/LLM(ChatGPT, Claude, Gemini, Perplexity, Copilot, 사내 LLM)의 특성과 강점을 구분할 수 있다",
+            "업무 목적에 맞는 AI 모델을 선택하고 모델별 프롬프트 전략을 조정할 수 있다",
+            "사내 LLM의 활용 원칙과 보안 판단 기준을 이해하고 적용할 수 있다",
+            "AI 에이전트와 MCP 개념을 이해하고 자동화 가능성을 인식할 수 있다"
+          ],
+          "imagePrompt": "Minimalist hand-drawn line-art illustration. Ink pen style with slight line weight variation. Limited palette: black linework on off-white background with warm orange (#E8863A) accents. Caricature characters with oversized heads, simple dot-line faces. Clean whitespace. No gradients, no 3D. A target board with four arrows hitting bullseye, each arrow labeled with a small icon representing learning goals."
+        },
+        {
+          "id": "m2-s03",
+          "type": "comparison",
+          "title": "주요 AI/LLM 종합 비교표",
+          "table": {
+            "headers": ["항목", "ChatGPT", "Claude", "Gemini", "Perplexity", "Copilot", "사내 LLM"],
+            "rows": [
+              ["최대 강점", "폭넓은 기능, 플러그인", "긴 문서 분석, 정밀 지시 준수", "멀티모달, 1M 토큰", "실시간 검색+출처", "M365 통합", "보안, 사내 데이터"],
+              ["컨텍스트", "128K", "200K", "1M (최대)", "모델별 상이", "128K", "8K~32K"],
+              ["인터넷 검색", "가능", "가능", "Google 연동", "핵심 기능", "Bing 연동", "불가"],
+              ["보안 수준", "외부 서버", "외부 서버", "외부 서버", "외부 서버", "외부(Enterprise 강화)", "사내 서버"]
+            ]
+          },
+          "notes": "만능 AI는 없다 — 업무 유형에 맞는 모델 선택이 첫 번째",
+          "imagePrompt": "Minimalist hand-drawn line-art illustration. Ink pen style with slight line weight variation. Limited palette: black linework on off-white background with warm orange (#E8863A) accents. Caricature characters with oversized heads, simple dot-line faces. Clean whitespace. No gradients, no 3D. A comparison chart with six columns, each topped by a different simple robot icon. Orange highlight bars showing different strengths for each."
+        },
+        {
+          "id": "m2-s04",
+          "type": "concept",
+          "title": "모델별 핵심 강점과 약점",
+          "bullets": [
+            "ChatGPT: 만능 도구, 대화형 반복 개선에 탁월. 긴 문서 뒤쪽 누락 주의",
+            "Claude: 200K 토큰, 복잡한 지시 정밀 준수, 최고 문장력. 이미지 생성 없음",
+            "Gemini: 1M 토큰, 멀티모달(영상까지), Google 연동. 한국어 품질 다소 낮음",
+            "Perplexity: 실시간 검색+출처, Model Council. 긴 문서 작성에 약함",
+            "Copilot: M365 완전 통합, 사내 문서 참조. M365 구독 필수"
+          ],
+          "imagePrompt": "Minimalist hand-drawn line-art illustration. Ink pen style with slight line weight variation. Limited palette: black linework on off-white background with warm orange (#E8863A) accents. Caricature characters with oversized heads, simple dot-line faces. Clean whitespace. No gradients, no 3D. Five caricature characters each holding a different tool: a Swiss army knife, a long scroll, a camera lens, a magnifying glass, and a briefcase. Orange accent on each tool."
+        },
+        {
+          "id": "m2-s05",
+          "type": "comparison",
+          "title": "동일 프롬프트, 다른 결과",
+          "subtitle": "수율 저하 원인 분석 비교 실험",
+          "table": {
+            "headers": ["비교 항목", "ChatGPT", "Claude", "사내 LLM"],
+            "rows": [
+              ["분석 구조", "3가지 원인 병렬 나열", "5단계 체계적 분석", "2가지 원인 간략 서술"],
+              ["분석 깊이", "일반적 수준", "메커니즘까지 상세 설명", "표면적 분석"],
+              ["표 제공", "기본 비교표", "영향도x발생확률 매트릭스", "표 없이 서술형"],
+              ["활용도", "초안 활용 가능", "보고서 즉시 활용 가능", "참고 수준"]
+            ]
+          },
+          "imagePrompt": "Minimalist hand-drawn line-art illustration. Ink pen style with slight line weight variation. Limited palette: black linework on off-white background with warm orange (#E8863A) accents. Caricature characters with oversized heads, simple dot-line faces. Clean whitespace. No gradients, no 3D. Three screens side by side showing different output quality levels — simple, medium, and detailed. Orange arrows pointing from the same input prompt above to all three screens."
+        },
+        {
+          "id": "m2-s06",
+          "type": "comparison",
+          "title": "모델별 프롬프트 최적화 전략",
+          "table": {
+            "headers": ["모델", "핵심 전략", "프롬프트 팁"],
+            "rows": [
+              ["ChatGPT", "대화형 반복 개선", "첫 질문은 간단히 → 후속 대화로 다듬기"],
+              ["Claude", "상세 지시 일괄 전달", "역할+맥락+지시+형식+조건을 한 번에"],
+              ["Gemini", "멀티모달 + 검색 활용", "이미지/파일 함께 첨부하여 질문"],
+              ["Perplexity", "검색 최적화 질문", "구체적 검색 키워드 포함, '2026년 기준'"],
+              ["사내 LLM", "풍부한 맥락 + Few-shot", "맥락 2배, 예시 2~3개, 한 번에 하나씩"]
+            ]
+          },
+          "imagePrompt": "Minimalist hand-drawn line-art illustration. Ink pen style with slight line weight variation. Limited palette: black linework on off-white background with warm orange (#E8863A) accents. Caricature characters with oversized heads, simple dot-line faces. Clean whitespace. No gradients, no 3D. Five different key-and-lock pairs arranged in a row, each key has a unique shape fitting its corresponding lock. Orange highlights on the matching pairs."
+        },
+        {
+          "id": "m2-s07",
+          "type": "concept",
+          "title": "사내 LLM 활용 4대 원칙",
+          "bullets": [
+            "1. 더 상세한 맥락 — 외부 AI보다 배경 설명을 2배 풍부하게",
+            "2. Few-shot 적극 활용 — 예시 2~3개로 패턴 학습 유도",
+            "3. 출력 형식 확실히 — 구조를 명확히 잡아야 이탈이 적음",
+            "4. 한 번에 하나씩 — 복합 요청보다 단일 요청이 안정적"
+          ],
+          "notes": "사내 LLM은 성능이 낮은 대신 보안이 보장됨. 보안 필요 업무는 반드시 사내 LLM",
+          "imagePrompt": "Minimalist hand-drawn line-art illustration. Ink pen style with slight line weight variation. Limited palette: black linework on off-white background with warm orange (#E8863A) accents. Caricature characters with oversized heads, simple dot-line faces. Clean whitespace. No gradients, no 3D. A shield icon with a lock symbol in the center, surrounded by four pillars labeled with numbers 1-4. Orange accent on the shield."
+        },
+        {
+          "id": "m2-s08",
+          "type": "concept",
+          "title": "AI 에이전트와 MCP — 업무 자동화의 미래",
+          "bullets": [
+            "기존 AI(챗봇): 질문에 답변 → AI 에이전트: 목표를 달성하기 위해 스스로 판단하고 행동",
+            "MCP(Model Context Protocol): AI를 위한 USB-C — 외부 시스템과 표준 연결",
+            "Function Calling: AI가 필요한 기능(API)을 자동으로 호출",
+            "Human-in-the-Loop: AI가 정보 수집/분석/초안 생성, 최종 판단은 사람"
+          ],
+          "notes": "2026년 현재 MCP는 월간 9,700만 건 이상의 SDK 다운로드 기록",
+          "imagePrompt": "Minimalist hand-drawn line-art illustration. Ink pen style with slight line weight variation. Limited palette: black linework on off-white background with warm orange (#E8863A) accents. Caricature characters with oversized heads, simple dot-line faces. Clean whitespace. No gradients, no 3D. A central robot character connected via orange lines to multiple system icons: a database cylinder, a calendar, an email envelope, and a chart. Blueprint-style flowchart layout."
+        },
+        {
+          "id": "m2-s09",
+          "type": "diagram",
+          "title": "보안 판단 플로차트",
+          "content": "사내 기밀/개인정보 포함? → YES → 사내 LLM\n→ NO → 외부 공개용? → 팩트 검증 필요? → YES → Perplexity + Claude\n→ 내부 참고용? → 리서치 → Perplexity + Gemini / 문서 작성 → Claude or ChatGPT / 데이터 분석 → ChatGPT / 오피스 업무 → Copilot",
+          "imagePrompt": "Minimalist hand-drawn line-art illustration. Ink pen style with slight line weight variation. Limited palette: black linework on off-white background with warm orange (#E8863A) accents. Caricature characters with oversized heads, simple dot-line faces. Clean whitespace. No gradients, no 3D. A blueprint-style decision tree flowchart with diamond-shaped decision nodes and rectangular action boxes. Orange arrows for YES paths, black arrows for NO paths. A lock icon at the top entry point."
+        },
+        {
+          "id": "m2-s10",
+          "type": "summary",
+          "title": "모듈 2 핵심 요약",
+          "bullets": [
+            "AI 모델마다 강점이 다르다 — 만능 AI는 없다",
+            "같은 프롬프트도 모델별로 최적화해야 한다",
+            "보안 판단이 AI 활용의 첫 관문이다",
+            "사내 LLM은 4대 원칙으로 보완한다",
+            "AI 에이전트(MCP)가 업무 자동화를 현실로 만든다"
+          ],
+          "imagePrompt": "Minimalist hand-drawn line-art illustration. Ink pen style with slight line weight variation. Limited palette: black linework on off-white background with warm orange (#E8863A) accents. Caricature characters with oversized heads, simple dot-line faces. Clean whitespace. No gradients, no 3D. A caricature character standing confidently with five floating cards around them, each showing a key insight icon. Orange glow on the central character."
+        }
+      ]
+    },
+    {
+      "id": "module-3",
+      "title": "보고서 작성 실전 가이드",
+      "subtitle": "Module 3",
+      "slides": [
+        {
+          "id": "m3-s01",
+          "type": "title",
+          "title": "보고서 작성 실전 가이드",
+          "subtitle": "AI와 함께 보고서를 완성하는 법",
+          "bullets": [],
+          "notes": "학습 시간: 약 40분",
+          "imagePrompt": "Minimalist hand-drawn line-art illustration. Ink pen style with slight line weight variation. Limited palette: black linework on off-white background with warm orange (#E8863A) accents. Caricature characters with oversized heads, simple dot-line faces. Clean whitespace. No gradients, no 3D. A caricature person and a robot collaboratively writing on a large document. Orange pen strokes appear on the paper between them."
+        },
+        {
+          "id": "m3-s02",
+          "type": "objectives",
+          "title": "학습 목표",
+          "bullets": [
+            "AI를 활용한 5단계 보고서 작성 워크플로를 이해하고 적용할 수 있다",
+            "제조업/금융업 보고서 유형별 프롬프트 템플릿을 작성하고 활용할 수 있다",
+            "Few-shot 기법으로 사내 보고서 양식을 AI에 학습시킬 수 있다",
+            "반복 보고서를 템플릿으로 저장하고 플랫폼별로 재사용할 수 있다"
+          ],
+          "imagePrompt": "Minimalist hand-drawn line-art illustration. Ink pen style with slight line weight variation. Limited palette: black linework on off-white background with warm orange (#E8863A) accents. Caricature characters with oversized heads, simple dot-line faces. Clean whitespace. No gradients, no 3D. Four target icons arranged in a grid, each with an orange bullseye, connected by dotted lines to a central document icon."
+        },
+        {
+          "id": "m3-s03",
+          "type": "diagram",
+          "title": "AI 보고서 작성 5단계 워크플로",
+          "table": {
+            "headers": ["단계", "작업", "담당", "시간 비중"],
+            "rows": [
+              ["1단계", "구조 설계 (목차/골격)", "AI 주도", "15%"],
+              ["2단계", "섹션별 초안 작성", "AI 주도", "20%"],
+              ["3단계", "데이터 시각화", "AI 지원", "10%"],
+              ["4단계", "자료 검색/법규 조사", "AI 주도", "25%"],
+              ["5단계", "검증/수정/완성", "사람 필수", "30%"]
+            ]
+          },
+          "notes": "기존 8시간 → AI 협업 2시간 (약 75% 시간 절감). 최종 책임은 항상 사람에게",
+          "imagePrompt": "Minimalist hand-drawn line-art illustration. Ink pen style with slight line weight variation. Limited palette: black linework on off-white background with warm orange (#E8863A) accents. Caricature characters with oversized heads, simple dot-line faces. Clean whitespace. No gradients, no 3D. A horizontal pipeline with five stages connected by arrows. First four stages have a robot icon, the last stage has a human icon with an orange highlight. A clock showing time savings above."
+        },
+        {
+          "id": "m3-s04",
+          "type": "example",
+          "title": "제조업 보고서 템플릿 — 공정 도입 검토서",
+          "code": "당신은 15년차 디스플레이 공정 엔지니어입니다.\n\n배경: 차세대 OLED 패널 생산을 위해 신규 IJP 공정 도입 검토 중\n\n요청: \"신규 OLED 공정(IJP) 도입 검토 보고서\" 목차 작성\n\n출력 조건:\n- 마크다운 형식, 3단계 깊이\n- 포함 섹션: 기술적 실현가능성, 비용 분석, 리스크 평가, 일정 계획\n- 총 5장 이내, 각 섹션에 핵심 항목 명시",
+          "imagePrompt": "Minimalist hand-drawn line-art illustration. Ink pen style with slight line weight variation. Limited palette: black linework on off-white background with warm orange (#E8863A) accents. Caricature characters with oversized heads, simple dot-line faces. Clean whitespace. No gradients, no 3D. A caricature engineer character in front of a laptop screen showing a structured document outline. Factory smokestacks visible through a window behind. Orange highlights on key sections."
+        },
+        {
+          "id": "m3-s05",
+          "type": "example",
+          "title": "금융업 보고서 템플릿 — 리스크 평가 보고서",
+          "code": "당신은 금융 리스크 관리(Risk Management) 전문가입니다.\n\n평가 대상: [포트폴리오/사업 영역]\n\n구조:\n1. 리스크 유형별 현황 (시장/신용/운영/법규)\n2. 주요 리스크 지표 변동 추이\n3. 시나리오 분석 (기본/스트레스/최악)\n4. 리스크 완화 방안 및 우선순위\n5. 경영진 권고사항\n\n출력: 리스크 매트릭스(영향도 x 발생확률) 표 포함",
+          "imagePrompt": "Minimalist hand-drawn line-art illustration. Ink pen style with slight line weight variation. Limited palette: black linework on off-white background with warm orange (#E8863A) accents. Caricature characters with oversized heads, simple dot-line faces. Clean whitespace. No gradients, no 3D. A caricature analyst at a desk with a risk matrix grid (2x2) on the screen. Orange warning triangles scattered around the higher risk quadrants."
+        },
+        {
+          "id": "m3-s06",
+          "type": "concept",
+          "title": "Few-shot으로 사내 양식 통일하기",
+          "bullets": [
+            "Few-shot: AI에게 '이런 형태로 만들어줘'라는 예시를 1~3개 보여주는 기법",
+            "기존 보고서를 예시로 제공하면 문체/구조/전문성 자동 통일",
+            "파일 업로드 활용: PDF/Word를 직접 첨부하여 양식 학습"
+          ],
+          "code": "[기존 보고서 예시]\n---\n(기존 보고서 서론 텍스트 붙여넣기)\n---\n\n[새 보고서 요청]\n위 예시와 동일한 문체, 단락 구성, 전문성 수준으로\nIJP 공정 도입 검토 보고서의 서론을 작성해주세요.",
+          "imagePrompt": "Minimalist hand-drawn line-art illustration. Ink pen style with slight line weight variation. Limited palette: black linework on off-white background with warm orange (#E8863A) accents. Caricature characters with oversized heads, simple dot-line faces. Clean whitespace. No gradients, no 3D. Two document icons side by side: left one labeled 'Example' with visible text lines, right one labeled 'New' being generated. An orange arrow from example to new document. A robot processing in between."
+        },
+        {
+          "id": "m3-s07",
+          "type": "comparison",
+          "title": "Before/After — 주간 업무 보고서",
+          "beforeAfter": {
+            "before": {
+              "title": "Before: 매번 처음부터",
+              "content": "\"이번 주 업무 보고서 작성해줘\" + 데이터 나열\n→ 단순 나열, 보고서 양식 없음, 인사이트 없음"
+            },
+            "after": {
+              "title": "After: 템플릿 기반 자동화",
+              "content": "역할(생산본부장 보고) + 5개 섹션 구조 고정 + 금주 데이터 교체\n→ 전주 대비 분석, 불량률 환산 자동 처리. 작성 시간 1시간 → 10분"
+            }
+          },
+          "imagePrompt": "Minimalist hand-drawn line-art illustration. Ink pen style with slight line weight variation. Limited palette: black linework on off-white background with warm orange (#E8863A) accents. Caricature characters with oversized heads, simple dot-line faces. Clean whitespace. No gradients, no 3D. Left: a frustrated caricature with a messy stack of papers and a clock showing many hours. Right: a happy caricature with a neat single report and a clock showing 10 minutes. Orange dividing line between."
+        },
+        {
+          "id": "m3-s08",
+          "type": "concept",
+          "title": "데이터 시각화 — 플랫폼별 방법",
+          "table": {
+            "headers": ["플랫폼", "데이터 입력", "차트 생성", "특징"],
+            "rows": [
+              ["ChatGPT (Plus)", "Excel/CSV 업로드", "Code Interpreter 차트", "Python 기반, 다양한 차트"],
+              ["Claude (Pro)", "PDF/Excel 업로드", "Artifacts 인터랙티브 차트", "실시간 수정 가능"],
+              ["Gemini (Advanced)", "Google Sheets 연동", "Sheets 차트 생성", "Google 생태계 연동"],
+              ["사내 LLM", "텍스트 붙여넣기", "환경에 따라 상이", "민감 데이터 사용 가능"]
+            ]
+          },
+          "imagePrompt": "Minimalist hand-drawn line-art illustration. Ink pen style with slight line weight variation. Limited palette: black linework on off-white background with warm orange (#E8863A) accents. Caricature characters with oversized heads, simple dot-line faces. Clean whitespace. No gradients, no 3D. Four different chart types (bar, pie, line, table) arranged in a grid, each inside a different device frame. Orange data points highlighted on each chart."
+        },
+        {
+          "id": "m3-s09",
+          "type": "concept",
+          "title": "반복 보고서 자동화 — 플랫폼별 저장/재사용",
+          "bullets": [
+            "ChatGPT: Projects 지침에 역할+형식 저장 → Deep Research로 외부 조사",
+            "Gemini: Gems에 이름+지침 저장 → Google Docs로 1클릭 내보내기",
+            "Claude: Projects 지침+지식(Knowledge) 업로드 → Research 버튼으로 외부 조사",
+            "사내 LLM: 시스템 프롬프트 등록 또는 메모장에 템플릿 저장"
+          ],
+          "notes": "핵심: 역할+형식은 한 번만 작성, 매번 데이터만 교체",
+          "imagePrompt": "Minimalist hand-drawn line-art illustration. Ink pen style with slight line weight variation. Limited palette: black linework on off-white background with warm orange (#E8863A) accents. Caricature characters with oversized heads, simple dot-line faces. Clean whitespace. No gradients, no 3D. A template document icon with a recycling arrow around it. Four smaller platform icons (representing different AI tools) branching out from the center. Orange accents on the reuse arrows."
+        },
+        {
+          "id": "m3-s10",
+          "type": "summary",
+          "title": "모듈 3 핵심 요약",
+          "bullets": [
+            "보고서는 5단계로 쪼개서 AI와 협업",
+            "Few-shot으로 사내 양식을 통일",
+            "데이터 시각화는 플랫폼 특성 활용",
+            "반복 보고서는 템플릿으로 자동화 — 작성 시간 80% 절감",
+            "최종 검증은 반드시 사람이 수행"
+          ],
+          "imagePrompt": "Minimalist hand-drawn line-art illustration. Ink pen style with slight line weight variation. Limited palette: black linework on off-white background with warm orange (#E8863A) accents. Caricature characters with oversized heads, simple dot-line faces. Clean whitespace. No gradients, no 3D. A caricature person and robot shaking hands over a completed report document. Five small star icons floating above. Orange glow on the handshake."
+        }
+      ]
+    },
+    {
+      "id": "module-4",
+      "title": "리서치와 자료 검색",
+      "subtitle": "Module 4",
+      "slides": [
+        {
+          "id": "m4-s01",
+          "type": "title",
+          "title": "리서치와 자료 검색",
+          "subtitle": "AI로 전문 자료를 빠르고 정확하게 찾는 법",
+          "bullets": [],
+          "notes": "학습 시간: 약 35분",
+          "imagePrompt": "Minimalist hand-drawn line-art illustration. Ink pen style with slight line weight variation. Limited palette: black linework on off-white background with warm orange (#E8863A) accents. Caricature characters with oversized heads, simple dot-line faces. Clean whitespace. No gradients, no 3D. A caricature detective character with a magnifying glass examining documents and web pages. Orange search beam emanating from the magnifying glass."
+        },
+        {
+          "id": "m4-s02",
+          "type": "objectives",
+          "title": "학습 목표",
+          "bullets": [
+            "AI 검색 도구별 강점과 약점을 이해하고 목적에 맞게 선택할 수 있다",
+            "제조업/금융업 특화 리서치 전략을 수립하고 실행할 수 있다",
+            "법률/규제 검색 시 AI 검색 → 원문 확인 → 전문가 검증 3단계를 적용할 수 있다",
+            "교차 검증 워크플로로 AI 검색 결과의 신뢰도를 확보할 수 있다"
+          ],
+          "imagePrompt": "Minimalist hand-drawn line-art illustration. Ink pen style with slight line weight variation. Limited palette: black linework on off-white background with warm orange (#E8863A) accents. Caricature characters with oversized heads, simple dot-line faces. Clean whitespace. No gradients, no 3D. A compass with four directional markers, each pointing to an orange target circle. The compass center has a search icon."
+        },
+        {
+          "id": "m4-s03",
+          "type": "comparison",
+          "title": "AI 검색 도구 비교 — 상황별 선택 가이드",
+          "table": {
+            "headers": ["검색 목적", "1순위 도구", "2순위 도구"],
+            "rows": [
+              ["최신 뉴스/사고 사례", "Perplexity", "Gemini"],
+              ["심층 기술 보고서 작성", "ChatGPT Deep Research", "Claude Research"],
+              ["법령 원문 정밀 분석", "Claude", "ChatGPT"],
+              ["특허/학술 논문 탐색", "Gemini", "Perplexity"],
+              ["빠른 팩트체크", "Perplexity", "Gemini"],
+              ["보험 약관/계약서 비교", "Claude", "ChatGPT"]
+            ]
+          },
+          "notes": "목적에 따라 2~3개 도구를 조합하면 검색 품질과 신뢰도가 크게 향상",
+          "imagePrompt": "Minimalist hand-drawn line-art illustration. Ink pen style with slight line weight variation. Limited palette: black linework on off-white background with warm orange (#E8863A) accents. Caricature characters with oversized heads, simple dot-line faces. Clean whitespace. No gradients, no 3D. A signpost with six directional arrows pointing different ways, each with a different tool icon at the tip. A caricature traveler choosing which path to take. Orange highlight on the signpost."
+        },
+        {
+          "id": "m4-s04",
+          "type": "example",
+          "title": "금융업 리서치 — DART 공시 분석 프롬프트",
+          "code": "당신은 금융 애널리스트입니다.\n\n(DART에서 복사한 표 데이터 붙여넣기)\n\n요청:\n1. 전년 동기 대비 주요 지표 변동 분석 (표 형식)\n2. 손해율/사업비율 추이에서 주목할 점 3가지\n3. 경영진 보고용 1문단 요약\n\n조건: 수치는 원 데이터 그대로 인용,\nAI 추론 부분은 \"[분석]\"으로 표시",
+          "notes": "DART 공시 데이터 중 공개된 정보만 외부 AI에 입력",
+          "imagePrompt": "Minimalist hand-drawn line-art illustration. Ink pen style with slight line weight variation. Limited palette: black linework on off-white background with warm orange (#E8863A) accents. Caricature characters with oversized heads, simple dot-line faces. Clean whitespace. No gradients, no 3D. A caricature analyst at a laptop with financial charts and data tables on screen. An orange-highlighted speech bubble shows structured analysis output."
+        },
+        {
+          "id": "m4-s05",
+          "type": "example",
+          "title": "제조업 리서치 — 기술 동향 조사 프롬프트",
+          "code": "당신은 디스플레이 기술 리서치 애널리스트입니다.\n\n주제: IJP 방식 OLED 제조 기술 동향 (2023~2025년)\n\n조사 항목:\n1. 주요 업체별 기술 발표 현황\n2. 핵심 기술 과제와 해결 현황 (표 형식)\n3. 최근 특허 동향 (주요 출원인, 기술 분류)\n4. 양산 적용 시점 전망 및 근거\n5. 우리 회사 시사점 3가지\n\n출처 반드시 표시, 미확인 정보는 \"[미확인]\"으로 표시",
+          "imagePrompt": "Minimalist hand-drawn line-art illustration. Ink pen style with slight line weight variation. Limited palette: black linework on off-white background with warm orange (#E8863A) accents. Caricature characters with oversized heads, simple dot-line faces. Clean whitespace. No gradients, no 3D. A caricature researcher examining patent documents and technical papers through a magnifying glass. Circuit board patterns and OLED panel shapes visible. Orange highlights on key findings."
+        },
+        {
+          "id": "m4-s06",
+          "type": "diagram",
+          "title": "법규 검색 3단계 — AI 검색 → 원문 확인 → 전문가 검증",
+          "bullets": [
+            "Step 1: AI 검색 (시작점) — Perplexity/ChatGPT로 관련 법규 초안 수집, 출처 링크 요청",
+            "Step 2: 원문 확인 (검증) — law.go.kr에서 조항 원문 대조, AI 요약과 일치 여부 체크",
+            "Step 3: 전문가 검증 (최종) — 법무팀/컴플라이언스팀 최종 확인, 보고서에 검증 상태 명시"
+          ],
+          "notes": "AI가 구체적으로 인용해도 실제 조항 내용이 전혀 다를 수 있음. 구체적 숫자일수록 더 의심",
+          "imagePrompt": "Minimalist hand-drawn line-art illustration. Ink pen style with slight line weight variation. Limited palette: black linework on off-white background with warm orange (#E8863A) accents. Caricature characters with oversized heads, simple dot-line faces. Clean whitespace. No gradients, no 3D. A three-step horizontal pipeline: Step 1 shows a robot with a search icon, Step 2 shows a document with a checkmark, Step 3 shows a human expert with a stamp. Orange arrows connecting each step."
+        },
+        {
+          "id": "m4-s07",
+          "type": "diagram",
+          "title": "교차 검증 4단계 워크플로",
+          "bullets": [
+            "Step 1: Perplexity로 초안 수집 — 실시간 웹 검색, 인라인 출처 확인",
+            "Step 2: Claude/ChatGPT로 정밀 분석 — 구조화/요약, 모호한 부분 식별",
+            "Step 3: 다른 AI로 교차 검증 — '사실과 다를 가능성 있는 부분을 찾아줘'",
+            "Step 4: 원문 대조 및 전문가 확인 — law.go.kr, DART 등 직접 대조"
+          ],
+          "imagePrompt": "Minimalist hand-drawn line-art illustration. Ink pen style with slight line weight variation. Limited palette: black linework on off-white background with warm orange (#E8863A) accents. Caricature characters with oversized heads, simple dot-line faces. Clean whitespace. No gradients, no 3D. A blueprint-style flowchart with four boxes connected by downward arrows. Each box has a different icon: a search magnifier, a document, a balance scale, and a verified stamp. Orange accent on connection arrows."
+        },
+        {
+          "id": "m4-s08",
+          "type": "tip",
+          "title": "검색 프롬프트 최적화 원칙",
+          "table": {
+            "headers": ["원칙", "나쁜 예", "좋은 예"],
+            "rows": [
+              ["물질/대상 특정", "\"화학물질 규제\"", "\"시클로헥사논(CAS 108-94-1) 취급 규제\""],
+              ["법률 단계 명시", "\"관련 법률\"", "\"법률 → 시행령 → 시행규칙 단계별\""],
+              ["출처 요구", "(언급 없음)", "\"원문 URL 포함, 출처 없으면 제외\""],
+              ["불확실성 표시", "(언급 없음)", "\"확실하지 않으면 '확인 필요' 표시\""]
+            ]
+          },
+          "imagePrompt": "Minimalist hand-drawn line-art illustration. Ink pen style with slight line weight variation. Limited palette: black linework on off-white background with warm orange (#E8863A) accents. Caricature characters with oversized heads, simple dot-line faces. Clean whitespace. No gradients, no 3D. A caricature character holding a lightbulb with an orange glow. Around the lightbulb, four small improvement arrows pointing from red X marks to green checkmarks."
+        },
+        {
+          "id": "m4-s09",
+          "type": "summary",
+          "title": "모듈 4 핵심 요약",
+          "bullets": [
+            "AI 검색 도구마다 강점이 다르다 — 목적별 선택",
+            "법률/규제는 3단계 검증 필수 (AI → 원문 → 전문가)",
+            "교차 검증으로 할루시네이션 방지",
+            "검색 프롬프트도 설계가 필요하다",
+            "검증 시간 포함해도 기존 대비 50~80% 시간 절감"
+          ],
+          "imagePrompt": "Minimalist hand-drawn line-art illustration. Ink pen style with slight line weight variation. Limited palette: black linework on off-white background with warm orange (#E8863A) accents. Caricature characters with oversized heads, simple dot-line faces. Clean whitespace. No gradients, no 3D. A summary board with five key points, each with an orange bullet marker. A caricature character pointing at the board with a presentation pointer."
+        }
+      ]
+    },
+    {
+      "id": "module-5",
+      "title": "할루시네이션 방지와 팩트체크",
+      "subtitle": "Module 5",
+      "slides": [
+        {
+          "id": "m5-s01",
+          "type": "title",
+          "title": "할루시네이션 방지와 팩트체크",
+          "subtitle": "AI가 만든 정보를 검증하는 필수 기술",
+          "bullets": [],
+          "notes": "학습 시간: 약 40분",
+          "imagePrompt": "Minimalist hand-drawn line-art illustration. Ink pen style with slight line weight variation. Limited palette: black linework on off-white background with warm orange (#E8863A) accents. Caricature characters with oversized heads, simple dot-line faces. Clean whitespace. No gradients, no 3D. A robot character with a speech bubble containing a mix of true (checkmark) and false (X mark) statements. An orange magnifying glass hovering over the false statements."
+        },
+        {
+          "id": "m5-s02",
+          "type": "objectives",
+          "title": "학습 목표",
+          "bullets": [
+            "AI 할루시네이션의 정의, 유형, 발생 메커니즘을 설명할 수 있다",
+            "실무 보고서에서 할루시네이션을 탐지하고 제거하는 3단계 팩트체크 워크플로를 적용할 수 있다",
+            "모델별 할루시네이션 특성을 이해하고, RAG/Grounding 등 기술적 대응 방법을 활용할 수 있다"
+          ],
+          "imagePrompt": "Minimalist hand-drawn line-art illustration. Ink pen style with slight line weight variation. Limited palette: black linework on off-white background with warm orange (#E8863A) accents. Caricature characters with oversized heads, simple dot-line faces. Clean whitespace. No gradients, no 3D. Three nested circles representing learning depth. Center has a shield icon, middle ring has a filter icon, outer ring has a gear icon. Orange highlights on each ring."
+        },
+        {
+          "id": "m5-s03",
+          "type": "concept",
+          "title": "할루시네이션이란? — 4가지 유형",
+          "table": {
+            "headers": ["유형", "설명", "위험도", "실무 예시"],
+            "rows": [
+              ["사실 조작", "존재하지 않는 사건/데이터 생성", "★★★★★", "\"삼성디스플레이가 2024년 IJP 양산 라인 가동\"(미가동)"],
+              ["출처 날조", "존재하지 않는 논문/판례 인용", "★★★★★", "\"대법원 2023다12345 판결\"(미존재)"],
+              ["수치 왜곡", "통계/재무 데이터 잘못 제시", "★★★★", "\"IJP 수율 97%\"(실제 85~91%)"],
+              ["법률 인용 오류", "법 조항 번호/내용 잘못 인용", "★★★★★", "\"산안법 제42조에 따르면...\"(내용 상이)"]
+            ]
+          },
+          "imagePrompt": "Minimalist hand-drawn line-art illustration. Ink pen style with slight line weight variation. Limited palette: black linework on off-white background with warm orange (#E8863A) accents. Caricature characters with oversized heads, simple dot-line faces. Clean whitespace. No gradients, no 3D. Four warning signs arranged in a grid, each showing a different type of error: a fabricated document, a fake citation, wrong numbers, and incorrect law reference. Orange warning triangles on each."
+        },
+        {
+          "id": "m5-s04",
+          "type": "concept",
+          "title": "실제 사고 사례 — 할루시네이션의 위험",
+          "bullets": [
+            "법률: 2023년 뉴욕 변호사가 ChatGPT 생성 가짜 판례 6건을 법원에 제출 → $5,000 제재금",
+            "2026년 기준 전 세계 AI 날조 인용 1,200건 이상, 하루 5~6건 새로 발견",
+            "금융: FINRA가 2026년 AI 할루시네이션을 주요 리스크로 지목, 탐지 절차 의무화 권고",
+            "제조: AI가 허용 농도 기준 10배 높게 제시 → 작업자 건강 위험",
+            "의료: LLM 의료 질의 할루시네이션 비율 64~67%"
+          ],
+          "notes": "AI를 안 쓰면 된다는 교훈이 아니라, 반드시 검증해야 한다는 교훈",
+          "imagePrompt": "Minimalist hand-drawn line-art illustration. Ink pen style with slight line weight variation. Limited palette: black linework on off-white background with warm orange (#E8863A) accents. Caricature characters with oversized heads, simple dot-line faces. Clean whitespace. No gradients, no 3D. A newspaper headline with an orange exclamation mark. Below it, icons representing law (gavel), finance (dollar sign), manufacturing (gear), and healthcare (cross). Each has a small warning symbol."
+        },
+        {
+          "id": "m5-s05",
+          "type": "concept",
+          "title": "AI가 자신 있게 거짓을 말하는 이유",
+          "bullets": [
+            "AI는 검색 엔진이 아님 — '다음에 올 확률이 높은 단어'를 예측하는 모델",
+            "빈도 편향: 인기 있는(하지만 부정확한) 통설을 반복",
+            "시간 편향: 학습 데이터 시점의 정보만 반영 (개정 전 법률 인용)",
+            "혼합 편향: A법의 조항 번호 + B법의 내용이 결합",
+            "과잉 확신: 확률이 낮은 출력에도 확신 있는 어투 사용"
+          ],
+          "imagePrompt": "Minimalist hand-drawn line-art illustration. Ink pen style with slight line weight variation. Limited palette: black linework on off-white background with warm orange (#E8863A) accents. Caricature characters with oversized heads, simple dot-line faces. Clean whitespace. No gradients, no 3D. A robot character confidently presenting a speech bubble, but the bubble has cracks showing the content is breaking apart. Orange crack lines highlight the fragility of the generated text."
+        },
+        {
+          "id": "m5-s06",
+          "type": "tip",
+          "title": "할루시네이션 경고 신호 5가지",
+          "bullets": [
+            "1. 지나치게 구체적인 숫자: '정확히 94.7% 효율 향상' — 출처 없이 소수점까지",
+            "2. 완벽한 형식의 인용: '대법원 2024다56789 판결문' — 형식은 완벽하지만 미존재",
+            "3. 단정적 어투: '반드시 ~해야 합니다', '법적으로 의무입니다'",
+            "4. 맥락과 동떨어진 정보: 질문과 관련 없는 세부 정보를 장황하게 서술",
+            "5. 최신 데이터 주장: '2026년 최신 통계에 따르면...' — 학습 범위 밖"
+          ],
+          "imagePrompt": "Minimalist hand-drawn line-art illustration. Ink pen style with slight line weight variation. Limited palette: black linework on off-white background with warm orange (#E8863A) accents. Caricature characters with oversized heads, simple dot-line faces. Clean whitespace. No gradients, no 3D. A caricature character holding an orange lightbulb, surrounded by five alarm bell icons in a circle. Each bell has a different small warning symbol."
+        },
+        {
+          "id": "m5-s07",
+          "type": "diagram",
+          "title": "팩트체크 3단계",
+          "bullets": [
+            "Step 1: 출처 존재 확인 — 법령→law.go.kr, 논문→Google Scholar, 판례→대법원 정보, 통계→원본 기관",
+            "Step 2: 원문 대조 — 조항 번호/내용/수치/적용 대상/시행일 일치 여부 체크",
+            "Step 3: 전문가 최종 검증 — 법무팀(법률), 재무팀(데이터), 기술팀(사양), 안전팀(기준)"
+          ],
+          "notes": "AI의 자신감 있는 어투에 속지 마세요. 최종 책임은 항상 사람에게",
+          "imagePrompt": "Minimalist hand-drawn line-art illustration. Ink pen style with slight line weight variation. Limited palette: black linework on off-white background with warm orange (#E8863A) accents. Caricature characters with oversized heads, simple dot-line faces. Clean whitespace. No gradients, no 3D. Three ascending verification steps as a staircase. Step 1 has a search icon, Step 2 has a comparison icon (two documents side by side), Step 3 has a human expert with a seal. Orange checkmarks at each step completion."
+        },
+        {
+          "id": "m5-s08",
+          "type": "comparison",
+          "title": "보고서 할루시네이션 제거 체크리스트 (10항목)",
+          "bullets": [
+            "1. 인용된 법령/규정이 실존하는가?",
+            "2. 수치 데이터의 출처가 명시되어 있는가?",
+            "3. 통계 수치가 원본과 일치하는가?",
+            "4. 인용된 논문/보고서가 실존하는가?",
+            "5. 법령의 시행일과 개정 이력이 최신인가?"
+          ],
+          "notes": "나머지 5항목: 단정적 서술 검증, 경쟁사 정보 정확성, 기술 사양 일치, 날짜/일정 현실성, 면책 문구 포함",
+          "imagePrompt": "Minimalist hand-drawn line-art illustration. Ink pen style with slight line weight variation. Limited palette: black linework on off-white background with warm orange (#E8863A) accents. Caricature characters with oversized heads, simple dot-line faces. Clean whitespace. No gradients, no 3D. A clipboard with a ten-item checklist, orange checkmarks on completed items. A caricature reviewer character with a pen checking off items."
+        },
+        {
+          "id": "m5-s09",
+          "type": "concept",
+          "title": "기술적 대응 — RAG, Grounding, 출처 표시",
+          "bullets": [
+            "RAG (검색 증강 생성): AI가 답변 전 관련 문서를 검색하여 참고 → 정확도 대폭 향상",
+            "Grounding: AI 생성 문장에 근거 문서 위치 표시 (Gemini API)",
+            "Perplexity 인라인 인용: 모든 주장에 출처를 인라인으로 표시",
+            "교차 검증: 하나의 AI로 초안 → 다른 AI로 검증 → 원문 대조"
+          ],
+          "imagePrompt": "Minimalist hand-drawn line-art illustration. Ink pen style with slight line weight variation. Limited palette: black linework on off-white background with warm orange (#E8863A) accents. Caricature characters with oversized heads, simple dot-line faces. Clean whitespace. No gradients, no 3D. A robot connected to a document database via an orange pipeline labeled 'RAG'. The robot outputs text with small citation markers. A verification shield icon nearby."
+        },
+        {
+          "id": "m5-s10",
+          "type": "summary",
+          "title": "모듈 5 핵심 요약",
+          "bullets": [
+            "AI 할루시네이션은 버그가 아니라 구조적 한계 — 'AI 결과 = 초안' 마인드셋",
+            "구체적 수치/법령/출처일수록 오류 위험 높음 → 최우선 검증",
+            "팩트체크 3단계: 출처 확인 → 원문 대조 → 전문가 검증",
+            "프롬프트로 할루시네이션을 줄일 수 있다 ('확인 필요' 조건 추가)",
+            "RAG/Grounding 등 기술적 대응도 병행"
+          ],
+          "imagePrompt": "Minimalist hand-drawn line-art illustration. Ink pen style with slight line weight variation. Limited palette: black linework on off-white background with warm orange (#E8863A) accents. Caricature characters with oversized heads, simple dot-line faces. Clean whitespace. No gradients, no 3D. A shield icon in the center with a checkmark, surrounded by five protective layer rings. Orange accent on the shield and outermost ring."
+        }
+      ]
+    },
+    {
+      "id": "module-6",
+      "title": "산업별 실전 시나리오",
+      "subtitle": "Module 6",
+      "slides": [
+        {
+          "id": "m6-s01",
+          "type": "title",
+          "title": "산업별 실전 시나리오",
+          "subtitle": "제조업 3개 + 금융업 3개 시나리오 통합 실습",
+          "bullets": [],
+          "notes": "학습 시간: 약 50분. 모듈 1~5 모든 기법의 통합 적용",
+          "imagePrompt": "Minimalist hand-drawn line-art illustration. Ink pen style with slight line weight variation. Limited palette: black linework on off-white background with warm orange (#E8863A) accents. Caricature characters with oversized heads, simple dot-line faces. Clean whitespace. No gradients, no 3D. A split scene: left half shows a factory with gears and circuit boards, right half shows a bank building with charts. Six scenario cards fan out from the center dividing line. Orange accent on the cards."
+        },
+        {
+          "id": "m6-s02",
+          "type": "objectives",
+          "title": "학습 목표",
+          "bullets": [
+            "제조업/금융업 실제 업무 상황에서 AI 활용 문제 해결 워크플로를 설계할 수 있다",
+            "Before/After 비교를 통해 프롬프트 설계, 할루시네이션 방지, 보안 판단을 통합 적용할 수 있다",
+            "각 시나리오의 검증 포인트와 보안 판단 기준을 실무에 즉시 적용할 수 있다"
+          ],
+          "imagePrompt": "Minimalist hand-drawn line-art illustration. Ink pen style with slight line weight variation. Limited palette: black linework on off-white background with warm orange (#E8863A) accents. Caricature characters with oversized heads, simple dot-line faces. Clean whitespace. No gradients, no 3D. Three target icons with arrows hitting each, representing the three learning goals. An orange graduation cap above them."
+        },
+        {
+          "id": "m6-s03",
+          "type": "diagram",
+          "title": "시나리오 6단계 구조",
+          "bullets": [
+            "1. 상황 설명 → 2. Before (나쁜 예) → 3. After (좋은 예)",
+            "→ 4. 기법 해설 → 5. 검증 포인트 → 6. 보안 판단"
+          ],
+          "notes": "모듈 1~5에서 배운 역할 부여, 구조화, CoT, Few-shot, 할루시네이션 방지, 팩트체크를 한 번에 적용",
+          "imagePrompt": "Minimalist hand-drawn line-art illustration. Ink pen style with slight line weight variation. Limited palette: black linework on off-white background with warm orange (#E8863A) accents. Caricature characters with oversized heads, simple dot-line faces. Clean whitespace. No gradients, no 3D. A horizontal six-step process flow with numbered boxes (1 through 6) connected by orange arrows. Each box has a small distinct icon: a scene, an X mark, a checkmark, a book, a verification seal, and a lock."
+        },
+        {
+          "id": "m6-s04",
+          "type": "comparison",
+          "title": "시나리오 A: 신규 공정 도입 검토 (제조)",
+          "subtitle": "OLED IJP 공정 도입 — Before/After",
+          "beforeAfter": {
+            "before": {
+              "title": "Before: 막연한 요청",
+              "content": "\"OLED IJP 공정 알려줘, 장단점 비교, 비용 비교\"\n→ 출처 불명 수치(70% 절감), 검증 안 된 양산 주장, 리스크 언급 없음"
+            },
+            "after": {
+              "title": "After: 구조화+수치 생성 금지",
+              "content": "역할(20년 경력 컨설턴트) + TRL 비교/비용 프레임워크(금액 제시 금지)/리스크 분석/로드맵\n→ 어디서 데이터를 수집할지 안내, 불확실성 표시, 리스크 체계 분류"
+            }
+          },
+          "notes": "핵심 기법: 수치 생성 금지, 데이터 수집 가이드 요청, 불확실성 표시",
+          "imagePrompt": "Minimalist hand-drawn line-art illustration. Ink pen style with slight line weight variation. Limited palette: black linework on off-white background with warm orange (#E8863A) accents. Caricature characters with oversized heads, simple dot-line faces. Clean whitespace. No gradients, no 3D. Left side: a crumbling factory blueprint with orange X marks on wrong numbers. Right side: a solid structured framework diagram with orange checkmarks and 'verify' labels. Arrow from left to right."
+        },
+        {
+          "id": "m6-s05",
+          "type": "comparison",
+          "title": "시나리오 B: 설비 이상/품질 이슈 대응 (제조)",
+          "subtitle": "AMOLED 잔상(Burn-in) 불량 클레임 대응",
+          "beforeAfter": {
+            "before": {
+              "title": "Before: 일반론 응답",
+              "content": "\"AMOLED 잔상 불량 원인과 대응 보고서 만들어줘\"\n→ 교과서 수준, 출처 불명 수치('10,000시간'), 고객 보고서로 부적합"
+            },
+            "after": {
+              "title": "After: 제품 특이적 분석",
+              "content": "구체적 제품 사양/불량률 제공 + 4관점 분석(공정/재료/설계/사용환경)\n→ 재현 시험 계획, 단기/중기/장기 대응, 고객 커뮤니케이션 가이드"
+            }
+          },
+          "notes": "보안 판단: 불량률/시험 데이터/공정 조건 모두 기밀 → 사내 LLM 필수",
+          "imagePrompt": "Minimalist hand-drawn line-art illustration. Ink pen style with slight line weight variation. Limited palette: black linework on off-white background with warm orange (#E8863A) accents. Caricature characters with oversized heads, simple dot-line faces. Clean whitespace. No gradients, no 3D. Left: a generic textbook with an orange X. Right: a detailed analysis framework with four quadrants labeled with small icons for process, material, design, and environment. Orange checkmark on the right."
+        },
+        {
+          "id": "m6-s06",
+          "type": "comparison",
+          "title": "시나리오 C: 법규 준수 검토 (제조)",
+          "subtitle": "IJP 유기 용제 규제 — 멀티 도구 워크플로",
+          "bullets": [
+            "Step 1: Perplexity → 조항 후보 수집 + 출처 링크",
+            "Step 2: law.go.kr 원문 확인 → 5개 정확, 1개 오류",
+            "Step 3: Claude로 원문 대조 분석 → '원문에 없는 내용은 추가하지 마세요'",
+            "Step 4: 법무팀 제출 → 최종 검증",
+            "결과: 총 45분 (기존 4~6시간 대비)"
+          ],
+          "notes": "핵심: 원문 기반 분석 + 생성 제한 + 단계적 검증",
+          "imagePrompt": "Minimalist hand-drawn line-art illustration. Ink pen style with slight line weight variation. Limited palette: black linework on off-white background with warm orange (#E8863A) accents. Caricature characters with oversized heads, simple dot-line faces. Clean whitespace. No gradients, no 3D. A multi-tool workflow diagram: three tool icons (search, analysis, verification) connected in sequence with orange arrows. A law book icon at the start and a verified stamp at the end."
+        },
+        {
+          "id": "m6-s07",
+          "type": "comparison",
+          "title": "시나리오 D: 보험 상품 비교 분석 (금융)",
+          "subtitle": "기업 배상책임보험 벤치마킹",
+          "beforeAfter": {
+            "before": {
+              "title": "Before: 가상 데이터 위험",
+              "content": "\"보험 상품 비교해줘\" → AI가 보험료/한도 수치를 전부 생성\n→ 실제 상품과 무관, '가성비 우수' 판단은 근거 없는 할루시네이션"
+            },
+            "after": {
+              "title": "After: 프레임워크만 요청",
+              "content": "수치 생성 금지 + 비교 항목/확인 위치/데이터 수집 계획 요청\n→ 약관 어디를 봐야 하는지 안내, 견적 요청 방법 제시"
+            }
+          },
+          "notes": "핵심: AI의 구조화 능력을 살리고, 수치 정확도 약점을 회피",
+          "imagePrompt": "Minimalist hand-drawn line-art illustration. Ink pen style with slight line weight variation. Limited palette: black linework on off-white background with warm orange (#E8863A) accents. Caricature characters with oversized heads, simple dot-line faces. Clean whitespace. No gradients, no 3D. Left: a table with fake numbers crossed out in orange. Right: a clean framework template with empty cells and orange labels showing where to look for real data. Arrow from left to right."
+        },
+        {
+          "id": "m6-s08",
+          "type": "comparison",
+          "title": "시나리오 E: 리스크 평가 보고서 (금융)",
+          "subtitle": "기업 신용리스크 평가 — 실제 데이터 기반",
+          "bullets": [
+            "Before: AI가 재무 수치를 전부 생성 + 근거 없는 신용등급 판정 → 위험",
+            "After: 실제 재무 데이터 입력 + CoT 4단계 분석 + 등급 부여 금지",
+            "핵심 기법: 실제 데이터 입력, CoT로 분석 투명성 확보, AI 과잉 판단 방지",
+            "보안: 고객 재무 데이터 포함 → 사내 LLM 필수"
+          ],
+          "imagePrompt": "Minimalist hand-drawn line-art illustration. Ink pen style with slight line weight variation. Limited palette: black linework on off-white background with warm orange (#E8863A) accents. Caricature characters with oversized heads, simple dot-line faces. Clean whitespace. No gradients, no 3D. A CoT chain of thought diagram with four connected boxes showing step-by-step analysis. Real data input arrow at top, 'No rating' warning sign at bottom. Orange chain links connecting steps."
+        },
+        {
+          "id": "m6-s09",
+          "type": "comparison",
+          "title": "시나리오 F: 금융 규제 준수 검토 (금융)",
+          "subtitle": "보험업법/금소법 약관 적합성 검토",
+          "bullets": [
+            "Step 1: Claude에 약관 초안 입력 → 구조 분석 + 잠재적 이슈 탐지",
+            "Step 2: Perplexity로 최신 감독 동향/제재 사례 검색",
+            "Step 3: 법무팀 제출용 의견서 프레임워크 작성",
+            "핵심: 원문 기반 분석, 불확실성 강제 표시, 면책 문구 포함"
+          ],
+          "notes": "보안: 미출시 약관은 영업비밀 → 약관 분석은 사내 LLM, 규제 검색은 외부 AI 가능",
+          "imagePrompt": "Minimalist hand-drawn line-art illustration. Ink pen style with slight line weight variation. Limited palette: black linework on off-white background with warm orange (#E8863A) accents. Caricature characters with oversized heads, simple dot-line faces. Clean whitespace. No gradients, no 3D. A three-step workflow with a law document icon at step 1, a search icon at step 2, and a formal opinion document at step 3. Orange verification stamps on each step. A lock icon on the input document."
+        },
+        {
+          "id": "m6-s10",
+          "type": "comparison",
+          "title": "시나리오별 사용 도구 요약",
+          "table": {
+            "headers": ["시나리오", "외부 AI 활용", "사내 LLM 필수", "전문가 검증"],
+            "rows": [
+              ["A. 공정 도입 검토", "기술 동향 조사", "비용 분석, 투자 시뮬레이션", "기술팀, 재무팀"],
+              ["B. 품질 이슈 대응", "일반 메커니즘 조사", "불량 데이터 분석", "품질팀, 기술팀"],
+              ["C. 법규 준수 검토", "법규 검색(Perplexity)", "사내 공정 정보 포함 분석", "법무팀, 안전팀"],
+              ["D. 보험 상품 비교", "비교 프레임워크 생성", "자사 상품 데이터", "상품개발팀, 계리사"],
+              ["E. 리스크 평가", "산업 동향 리서치", "고객 재무 데이터", "리스크관리위원회"],
+              ["F. 규제 준수 검토", "최신 감독 동향", "약관 초안 분석", "법무팀, 준법감시팀"]
+            ]
+          },
+          "imagePrompt": "Minimalist hand-drawn line-art illustration. Ink pen style with slight line weight variation. Limited palette: black linework on off-white background with warm orange (#E8863A) accents. Caricature characters with oversized heads, simple dot-line faces. Clean whitespace. No gradients, no 3D. A matrix grid with six rows and three columns. Each cell has a small icon. Column headers show: cloud (external AI), shield (internal LLM), and person (expert). Orange highlights on the diagonal of most critical combinations."
+        },
+        {
+          "id": "m6-s11",
+          "type": "summary",
+          "title": "모듈 6 핵심 요약 — 6가지 원칙",
+          "bullets": [
+            "1. AI에게 수치를 만들게 하지 않는다 — 프레임워크만 요청",
+            "2. 구체적 상황을 제공해야 구체적 답이 나온다",
+            "3. CoT로 분석 과정을 투명하게 — Step by Step",
+            "4. 멀티 도구 워크플로가 정확도를 높인다",
+            "5. 보안 판단은 모든 시나리오의 필수 단계",
+            "6. 법률/규제 정보는 반드시 원문 확인"
+          ],
+          "notes": "AI는 도구입니다. 최종 판단과 책임은 항상 사람에게 있습니다.",
+          "imagePrompt": "Minimalist hand-drawn line-art illustration. Ink pen style with slight line weight variation. Limited palette: black linework on off-white background with warm orange (#E8863A) accents. Caricature characters with oversized heads, simple dot-line faces. Clean whitespace. No gradients, no 3D. A caricature character in the center wearing a graduation cap, surrounded by six floating principle cards arranged in a circle. Each card has a unique icon. Orange glow emanating from the central character. A banner below reading 'AI + Human = Best Results'."
+        }
+      ]
+    }
+  ]
+}

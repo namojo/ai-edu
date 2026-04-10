@@ -1,0 +1,123 @@
+@import "tailwindcss";
+
+:root {
+  --bg-primary: #FFFDF7;
+  --bg-secondary: #FFF8EE;
+  --bg-code: #F5F0EA;
+  --text-primary: #2D2A26;
+  --text-secondary: #6B6560;
+  --accent: #E8863A;
+  --accent-light: #FFF0E0;
+  --accent-dark: #C46A25;
+  --border: #E8E2DA;
+}
+
+@theme inline {
+  --color-bg-primary: var(--bg-primary);
+  --color-bg-secondary: var(--bg-secondary);
+  --color-bg-code: var(--bg-code);
+  --color-text-primary: var(--text-primary);
+  --color-text-secondary: var(--text-secondary);
+  --color-accent: var(--accent);
+  --color-accent-light: var(--accent-light);
+  --color-accent-dark: var(--accent-dark);
+  --color-border: var(--border);
+}
+
+body {
+  background: var(--bg-primary);
+  color: var(--text-primary);
+  font-family: 'Pretendard', -apple-system, BlinkMacSystemFont, system-ui, sans-serif;
+}
+
+/* Scrollbar styling */
+::-webkit-scrollbar {
+  width: 6px;
+  height: 6px;
+}
+
+::-webkit-scrollbar-track {
+  background: transparent;
+}
+
+::-webkit-scrollbar-thumb {
+  background: var(--border);
+  border-radius: 3px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: var(--text-secondary);
+}
+
+/* Slide transition */
+.slide-enter {
+  opacity: 0;
+  transform: translateX(20px);
+}
+
+.slide-enter-active {
+  opacity: 1;
+  transform: translateX(0);
+  transition: opacity 200ms ease-out, transform 200ms ease-out;
+}
+
+.slide-exit {
+  opacity: 1;
+  transform: translateX(0);
+}
+
+.slide-exit-active {
+  opacity: 0;
+  transform: translateX(-20px);
+  transition: opacity 200ms ease-out, transform 200ms ease-out;
+}
+
+/* Skeleton animation */
+@keyframes shimmer {
+  0% { background-position: -200% 0; }
+  100% { background-position: 200% 0; }
+}
+
+.skeleton {
+  background: linear-gradient(90deg, var(--bg-secondary) 25%, var(--border) 50%, var(--bg-secondary) 75%);
+  background-size: 200% 100%;
+  animation: shimmer 1.5s ease-in-out infinite;
+}
+
+/* Dot navigation active state */
+.dot-active {
+  width: 24px;
+  border-radius: 4px;
+  background-color: var(--accent);
+}
+
+.dot-inactive {
+  width: 8px;
+  border-radius: 50%;
+  background-color: var(--border);
+}
+
+/* Code block styling */
+.code-block {
+  background: var(--bg-code);
+  border: 1px solid var(--border);
+  border-radius: 8px;
+  padding: 1rem 1.25rem;
+  font-family: 'Pretendard', monospace;
+  font-size: 0.875rem;
+  line-height: 1.6;
+  white-space: pre-wrap;
+  word-break: break-word;
+  overflow-x: auto;
+}
+
+/* Accordion toggle */
+.accordion-content {
+  max-height: 0;
+  overflow: hidden;
+  transition: max-height 300ms ease-out;
+}
+
+.accordion-content.open {
+  max-height: 2000px;
+}
