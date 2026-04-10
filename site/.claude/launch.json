@@ -1,0 +1,11 @@
+{
+  "version": "0.0.1",
+  "configurations": [
+    {
+      "name": "preview",
+      "runtimeExecutable": "/Users/andy/.local/share/fnm/node-versions/v24.14.1/installation/bin/npx",
+      "runtimeArgs": ["serve", "out", "-l", "3456"],
+      "port": 3456
+    }
+  ]
+}

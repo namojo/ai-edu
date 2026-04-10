@@ -19,7 +19,12 @@ export default function RootLayout({
           href="https://cdn.jsdelivr.net/gh/orioncactus/pretendard/dist/web/static/pretendard.min.css"
         />
       </head>
-      <body className="min-h-full flex flex-col">{children}</body>
+      <body
+        className="min-h-full flex flex-col"
+        style={{ background: 'var(--site-bg)' }}
+      >
+        {children}
+      </body>
     </html>
   );
 }
