@@ -21,12 +21,10 @@ function slugify(text: string): string {
 let slugCounts: Map<string, number>;
 
 function getUniqueSlug(text: string): string {
-  let id = slugify(text);
-  const count = slugCounts.get(id) || 0;
-  if (count > 0) {
-    id = `${id}-${count}`;
-  }
-  slugCounts.set(id, count + 1);
+  const baseId = slugify(text);
+  const count = slugCounts.get(baseId) || 0;
+  const id = count > 0 ? `${baseId}-${count}` : baseId;
+  slugCounts.set(baseId, count + 1);
   return id;
 }
 

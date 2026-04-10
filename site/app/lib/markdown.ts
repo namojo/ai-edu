@@ -31,14 +31,12 @@ export function extractTOC(markdown: string): TOCItem[] {
     if (match) {
       const level = match[1].length;
       const text = match[2].trim();
-      let id = slugify(text);
+      const baseId = slugify(text);
 
       // Handle duplicate slugs (append -1, -2, etc.)
-      const count = slugCounts.get(id) || 0;
-      if (count > 0) {
-        id = `${id}-${count}`;
-      }
-      slugCounts.set(id, count + 1);
+      const count = slugCounts.get(baseId) || 0;
+      const id = count > 0 ? `${baseId}-${count}` : baseId;
+      slugCounts.set(baseId, count + 1);
 
       items.push({ id, text, level });
     }
