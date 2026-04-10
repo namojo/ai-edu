@@ -1,12 +1,13 @@
 'use client';
 
-import { useState, useEffect, useCallback } from 'react';
+import { useState, useEffect, useCallback, useRef } from 'react';
 import { ChevronDown, ChevronUp, List } from 'lucide-react';
 import type { TOCItem } from '../lib/markdown';
 
 export default function TableOfContents({ items }: { items: TOCItem[] }) {
   const [activeId, setActiveId] = useState<string>('');
   const [mobileOpen, setMobileOpen] = useState(false);
+  const isClickScrolling = useRef(false);
 
   // IntersectionObserver to detect active section
   useEffect(() => {
@@ -18,16 +19,23 @@ export default function TableOfContents({ items }: { items: TOCItem[] }) {
 
     const observer = new IntersectionObserver(
       (entries) => {
-        // Find the first heading that is intersecting
-        for (const entry of entries) {
-          if (entry.isIntersecting) {
-            setActiveId(entry.target.id);
-            break;
+        if (isClickScrolling.current) return;
+
+        // Collect all currently visible headings
+        const visibleEntries = entries.filter((e) => e.isIntersecting);
+        if (visibleEntries.length > 0) {
+          // Pick the one closest to the top
+          let closest = visibleEntries[0];
+          for (const entry of visibleEntries) {
+            if (entry.boundingClientRect.top < closest.boundingClientRect.top) {
+              closest = entry;
+            }
           }
+          setActiveId(closest.target.id);
         }
       },
       {
-        rootMargin: '-80px 0px -70% 0px',
+        rootMargin: '-80px 0px -60% 0px',
         threshold: 0,
       }
     );
@@ -40,10 +48,19 @@ export default function TableOfContents({ items }: { items: TOCItem[] }) {
     (id: string) => {
       const el = document.getElementById(id);
       if (el) {
-        el.scrollIntoView({ behavior: 'smooth' });
-        window.history.replaceState(null, '', `#${id}`);
+        isClickScrolling.current = true;
         setActiveId(id);
         setMobileOpen(false);
+
+        const yOffset = -100;
+        const y = el.getBoundingClientRect().top + window.scrollY + yOffset;
+        window.scrollTo({ top: y, behavior: 'smooth' });
+        window.history.replaceState(null, '', `#${id}`);
+
+        // Re-enable observer after scroll completes
+        setTimeout(() => {
+          isClickScrolling.current = false;
+        }, 800);
       }
     },
     []

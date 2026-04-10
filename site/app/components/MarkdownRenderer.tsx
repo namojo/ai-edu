@@ -1,11 +1,49 @@
 'use client';
 
+import React from 'react';
 import ReactMarkdown from 'react-markdown';
 import remarkGfm from 'remark-gfm';
-import rehypeSlug from 'rehype-slug';
 import rehypeHighlight from 'rehype-highlight';
 import type { Components } from 'react-markdown';
 import CopyButton from './CopyButton';
+import MermaidDiagram from './MermaidDiagram';
+
+function slugify(text: string): string {
+  return text
+    .toLowerCase()
+    .replace(/[^\w\s가-힣-]/g, '')
+    .replace(/\s+/g, '-')
+    .replace(/-+/g, '-')
+    .replace(/^-|-$/g, '');
+}
+
+// Track used slugs per render to handle duplicates
+let slugCounts: Map<string, number>;
+
+function getUniqueSlug(text: string): string {
+  let id = slugify(text);
+  const count = slugCounts.get(id) || 0;
+  if (count > 0) {
+    id = `${id}-${count}`;
+  }
+  slugCounts.set(id, count + 1);
+  return id;
+}
+
+function extractTextFromChildren(children: React.ReactNode): string {
+  if (typeof children === 'string') return children;
+  if (typeof children === 'number') return String(children);
+  if (!children) return '';
+  if (Array.isArray(children)) {
+    return children.map(extractTextFromChildren).join('');
+  }
+  if (React.isValidElement(children) && children.props) {
+    return extractTextFromChildren(
+      (children.props as { children?: React.ReactNode }).children
+    );
+  }
+  return '';
+}
 
 function CalloutBox({
   type,
@@ -40,8 +78,19 @@ function getCalloutType(text: string): { type: 'tip' | 'key' | 'warning'; title:
 }
 
 const components: Components = {
+  h2({ children }) {
+    const text = extractTextFromChildren(children);
+    const id = getUniqueSlug(text);
+    return <h2 id={id}>{children}</h2>;
+  },
+
+  h3({ children }) {
+    const text = extractTextFromChildren(children);
+    const id = getUniqueSlug(text);
+    return <h3 id={id}>{children}</h3>;
+  },
+
   blockquote({ children }) {
-    // Check first text child for emoji callout markers
     const childArray = Array.isArray(children) ? children : [children];
     let firstText = '';
 
@@ -86,7 +135,6 @@ const components: Components = {
   },
 
   pre({ children }) {
-    // Extract code string and language from children
     let codeString = '';
     let language = '';
 
@@ -103,6 +151,11 @@ const components: Components = {
       const className = codeEl.props.className || '';
       const langMatch = className.match(/language-(\w+)/);
       language = langMatch ? langMatch[1] : '';
+    }
+
+    // Render mermaid code blocks as diagrams
+    if (language === 'mermaid') {
+      return <MermaidDiagram chart={codeString} />;
     }
 
     return (
@@ -148,11 +201,14 @@ const components: Components = {
 };
 
 export default function MarkdownRenderer({ content }: { content: string }) {
+  // Reset slug counter for each render
+  slugCounts = new Map<string, number>();
+
   return (
     <div className="prose">
       <ReactMarkdown
         remarkPlugins={[remarkGfm]}
-        rehypePlugins={[rehypeSlug, rehypeHighlight]}
+        rehypePlugins={[rehypeHighlight]}
         components={components}
       >
         {content}

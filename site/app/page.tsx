@@ -1,5 +1,5 @@
 import Link from "next/link";
-import { BookOpen, Brain, FileText, Search, ShieldCheck, Factory, Clock, ArrowRight, Presentation } from "lucide-react";
+import { BookOpen, Brain, FileText, Search, ShieldCheck, Factory, Clock, ArrowRight } from "lucide-react";
 
 import { MODULE_CONFIG } from "./lib/modules";
 import Header from "./components/Header";
@@ -43,18 +43,6 @@ export default function Home() {
           ))}
         </div>
 
-        {/* CTA Button */}
-        <Link
-          href="/slides"
-          className="inline-flex items-center gap-2 px-6 py-3 rounded-lg text-base font-semibold transition-colors"
-          style={{
-            background: 'var(--site-accent)',
-            color: '#FFFFFF',
-          }}
-        >
-          <Presentation size={18} />
-          전체 발표자료 보기
-        </Link>
       </section>
 
       {/* Module Cards Grid */}

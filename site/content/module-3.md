@@ -33,10 +33,17 @@
 
 ### 단계별 AI와 사람의 역할 구분
 
-```
-[1. 구조 설계] → [2. 섹션별 초안] → [3. 데이터 시각화] → [4. 자료 검색] → [5. 검증·완성]
-   AI 주도         AI 주도          AI 지원          AI 주도         사람 필수
-   ────────────────── AI 영역 ──────────────────    ──── 사람 영역 ────
+```mermaid
+graph LR
+    A["1. 구조 설계<br/><small>AI 주도</small>"] --> B["2. 섹션별 초안<br/><small>AI 주도</small>"]
+    B --> C["3. 데이터 시각화<br/><small>AI 지원</small>"]
+    C --> D["4. 자료 검색<br/><small>AI 주도</small>"]
+    D --> E["5. 검증·완성<br/><small>사람 필수</small>"]
+    style A fill:#DBEAFE,stroke:#2563EB,color:#1E40AF
+    style B fill:#DBEAFE,stroke:#2563EB,color:#1E40AF
+    style C fill:#DBEAFE,stroke:#2563EB,color:#1E40AF
+    style D fill:#DBEAFE,stroke:#2563EB,color:#1E40AF
+    style E fill:#FEF3C7,stroke:#D97706,color:#92400E
 ```
 
 **총 소요 시간 비교**:

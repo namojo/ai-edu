@@ -2,7 +2,8 @@
 
 import Link from 'next/link';
 import { usePathname } from 'next/navigation';
-import { BookOpen, Presentation } from 'lucide-react';
+import { BookOpen } from 'lucide-react';
+import ThemeToggle from './ThemeToggle';
 
 export default function Header() {
   const pathname = usePathname();
@@ -26,7 +27,7 @@ export default function Header() {
         </Link>
 
         {/* Navigation */}
-        <nav className="flex items-center gap-1">
+        <nav className="flex items-center gap-2">
           <Link
             href="/#modules"
             className="flex items-center gap-1.5 px-3 py-2 rounded-lg text-sm font-medium transition-colors"
@@ -39,18 +40,7 @@ export default function Header() {
             <BookOpen size={16} />
             <span className="hidden sm:inline">학습하기</span>
           </Link>
-          <Link
-            href="/slides"
-            className="flex items-center gap-1.5 px-3 py-2 rounded-lg text-sm font-medium transition-colors"
-            style={{
-              color: pathname.startsWith('/slides')
-                ? 'var(--site-accent)'
-                : 'var(--site-text-secondary)',
-            }}
-          >
-            <Presentation size={16} />
-            <span className="hidden sm:inline">발표자료</span>
-          </Link>
+          <ThemeToggle />
         </nav>
       </div>
     </header>

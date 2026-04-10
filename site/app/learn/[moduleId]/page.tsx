@@ -1,6 +1,5 @@
 import { notFound } from 'next/navigation';
 import Link from 'next/link';
-import { Presentation } from 'lucide-react';
 import { MODULE_CONFIG, getModuleConfig } from '../../lib/modules';
 import { readModuleMarkdown, extractTOC } from '../../lib/markdown';
 import Header from '../../components/Header';
@@ -51,18 +50,6 @@ export default async function LearnPage({
                 {config.title}
               </h1>
             </div>
-            <Link
-              href={`/slides/${moduleId}`}
-              className="inline-flex items-center gap-2 px-4 py-2 rounded-lg text-sm font-medium transition-colors self-start"
-              style={{
-                background: 'var(--site-bg-secondary)',
-                color: 'var(--site-text-secondary)',
-                border: '1px solid var(--site-border)',
-              }}
-            >
-              <Presentation size={16} />
-              발표자료 보기
-            </Link>
           </div>
         </div>
       </div>
