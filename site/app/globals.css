@@ -349,12 +349,36 @@ body {
   vertical-align: top;
 }
 
+/* First column — short terms ("Zero-shot", "Few-shot", etc.) stay on one line for readability */
+.prose tbody td:first-child {
+  white-space: nowrap;
+  font-weight: 500;
+}
+
+/* On narrow screens, allow wrapping to prevent horizontal scroll explosion */
+@media (max-width: 640px) {
+  .prose tbody td:first-child {
+    white-space: normal;
+  }
+}
+
 .prose tbody tr:last-child td {
   border-bottom: none;
 }
 
 .prose tbody tr:hover {
   background: var(--site-bg-secondary);
+}
+
+/* Responsive wrapper already in MarkdownRenderer — ensure horizontal scroll on overflow */
+.prose .table-wrapper {
+  overflow-x: auto;
+  margin: 1.25rem 0;
+  -webkit-overflow-scrolling: touch;
+}
+
+.prose .table-wrapper > table {
+  margin: 0;
 }
 
 /* ═══════════════════════════════════════════
