@@ -1,10 +1,10 @@
 import Link from "next/link";
-import { BookOpen, Brain, FileText, Search, ShieldCheck, Factory, Clock, ArrowRight } from "lucide-react";
+import { BookOpen, Brain, FileText, Search, ShieldCheck, Landmark, Clock, ArrowRight } from "lucide-react";
 
 import { MODULE_CONFIG } from "./lib/modules";
 import Header from "./components/Header";
 
-const moduleIcons = [BookOpen, Brain, FileText, Search, ShieldCheck, Factory];
+const moduleIcons = [BookOpen, Brain, FileText, Search, ShieldCheck, Landmark];
 
 export default function Home() {
   return (
@@ -17,13 +17,13 @@ export default function Home() {
           className="text-4xl md:text-5xl font-extrabold mb-4 tracking-tight"
           style={{ color: 'var(--site-text)' }}
         >
-          생성형 AI 활용 교육
+          KDB 생성형 AI 활용 교육
         </h1>
         <p
           className="text-lg md:text-xl mb-8"
           style={{ color: 'var(--site-text-secondary)' }}
         >
-          제조업 &#183; 금융권 직장인을 위한 실전 가이드
+          한국산업은행(KDB) 임직원을 위한 실전 가이드
         </p>
 
         {/* AI Tool Badges */}
@@ -142,7 +142,7 @@ export default function Home() {
           color: 'var(--site-text-secondary)',
         }}
       >
-        생성형 AI 활용 교육 &copy; 2025
+        KDB 생성형 AI 활용 교육 &copy; 2026
       </footer>
     </div>
   );

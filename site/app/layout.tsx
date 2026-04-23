@@ -2,8 +2,8 @@ import type { Metadata } from "next";
 import "./globals.css";
 
 export const metadata: Metadata = {
-  title: "생성형 AI 활용 교육",
-  description: "제조업·금융권 직장인을 위한 실전 가이드",
+  title: "KDB 생성형 AI 활용 교육",
+  description: "한국산업은행(KDB) 임직원을 위한 생성형 AI 실전 가이드",
 };
 
 export default function RootLayout({

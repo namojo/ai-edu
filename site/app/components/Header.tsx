@@ -23,7 +23,7 @@ export default function Header() {
           className="flex items-center gap-2 font-bold text-lg"
           style={{ color: 'var(--site-text)' }}
         >
-          <span>AI 교육</span>
+          <span>KDB AI 교육</span>
         </Link>
 
         {/* Navigation */}
