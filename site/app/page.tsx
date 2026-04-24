@@ -17,13 +17,13 @@ export default function Home() {
           className="text-4xl md:text-5xl font-extrabold mb-4 tracking-tight"
           style={{ color: 'var(--site-text)' }}
         >
-          KDB 생성형 AI 활용 교육
+          KDB생명 생성형 AI 활용 교육
         </h1>
         <p
           className="text-lg md:text-xl mb-8"
           style={{ color: 'var(--site-text-secondary)' }}
         >
-          한국산업은행(KDB) 임직원을 위한 실전 가이드
+          KDB생명 임직원을 위한 보험업 실전 가이드
         </p>
 
         {/* AI Tool Badges */}
