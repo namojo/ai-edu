@@ -1,7 +1,7 @@
 'use client';
 
 import { useState, useEffect, useCallback, useRef } from 'react';
-import { ChevronDown, ChevronUp, List } from 'lucide-react';
+import { List, Menu, X } from 'lucide-react';
 import type { TOCItem } from '../lib/markdown';
 
 export default function TableOfContents({ items }: { items: TOCItem[] }) {
@@ -112,35 +112,56 @@ export default function TableOfContents({ items }: { items: TOCItem[] }) {
         </div>
       </aside>
 
-      {/* Mobile: dropdown toggle */}
-      <div className="lg:hidden mb-6">
-        <button
-          onClick={() => setMobileOpen(!mobileOpen)}
-          className="w-full flex items-center justify-between px-4 py-3 rounded-lg text-sm font-medium"
-          style={{
-            background: 'var(--site-bg-secondary)',
-            border: '1px solid var(--site-border)',
-            color: 'var(--site-text)',
-          }}
-        >
-          <span className="flex items-center gap-2">
-            <List size={16} />
-            목차
-          </span>
-          {mobileOpen ? <ChevronUp size={16} /> : <ChevronDown size={16} />}
-        </button>
-        {mobileOpen && (
+      {/* Mobile: floating hamburger toggle */}
+      <button
+        onClick={() => setMobileOpen(true)}
+        aria-label="목차 열기"
+        className="lg:hidden fixed bottom-5 right-5 z-40 w-12 h-12 rounded-full flex items-center justify-center shadow-lg"
+        style={{
+          background: 'var(--site-accent)',
+          color: '#FFFFFF',
+        }}
+      >
+        <Menu size={20} />
+      </button>
+
+      {/* Mobile: slide-in drawer */}
+      {mobileOpen && (
+        <>
           <div
-            className="mt-2 px-4 py-3 rounded-lg"
+            onClick={() => setMobileOpen(false)}
+            aria-hidden="true"
+            className="lg:hidden fixed inset-0 z-40"
+            style={{ background: 'rgba(0,0,0,0.5)' }}
+          />
+          <aside
+            className="lg:hidden fixed top-0 left-0 bottom-0 z-50 w-72 max-w-[85vw] overflow-y-auto p-5"
             style={{
-              background: 'var(--site-bg-secondary)',
-              border: '1px solid var(--site-border)',
+              background: 'var(--site-bg)',
+              borderRight: '1px solid var(--site-border)',
             }}
           >
+            <div className="flex items-center justify-between mb-4">
+              <h3
+                className="text-xs font-semibold uppercase tracking-wider flex items-center gap-1.5"
+                style={{ color: 'var(--site-text-secondary)' }}
+              >
+                <List size={14} />
+                목차
+              </h3>
+              <button
+                onClick={() => setMobileOpen(false)}
+                aria-label="목차 닫기"
+                className="p-1 rounded"
+                style={{ color: 'var(--site-text-secondary)' }}
+              >
+                <X size={18} />
+              </button>
+            </div>
             {tocList}
-          </div>
-        )}
-      </div>
+          </aside>
+        </>
+      )}
     </>
   );
 }
